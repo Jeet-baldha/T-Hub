@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: #f2f2f2;
+}
+
+.bg-image{
+    background-image: url('assets//slide_simple.jpg');
+    height: 600px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
