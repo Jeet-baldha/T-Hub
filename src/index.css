@@ -7,14 +7,23 @@ body{
 }
 
 .bg-image{
-    background-image: url('assets//slide_simple.jpg');
+    background-image: url('slide_simple.jpg');
     width: 100%;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .product-image{
-    width: 100%; /* Make the image fill the container */
-    height: auto; /* Maintain the aspect ratio of the image */
-    transition: transform 0.3s ease; /* Add a smooth transition on hover */
+    width: 100%; 
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.product-bg-image{
+
+    background-image: url('producat-page-bg.jpg');
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+
 }

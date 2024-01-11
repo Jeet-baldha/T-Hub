@@ -2,6 +2,7 @@ import React from "react"
 import Navbar from "./Navbar/Navbar"
 import Home from "./Pages/Home"
 import Footer from "./Footer/Footer"
+import Product from "./Pages/Product"
 
 function App() {
   
@@ -9,7 +10,7 @@ function App() {
   return (
     <>
      <Navbar></Navbar>
-     <Home />
+     <Product />
      <Footer></Footer>
     </>
   )
