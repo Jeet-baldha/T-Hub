@@ -1,10 +1,21 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import StarRating from '../components/StarRating'
+import data from '../assets/Data/t-shirt'
+import ProductCard from '../components/ProductCard'
 
 function Product() {
 
     const sizes = ['S', 'M', 'L', 'XL'];
     const colors = ['red', 'green', 'blue', 'yellow'];
+
+    const [activeLink, setActiveLink] = useState("pd");
+    const [activeImgUrl, setActiveImgUrl] = useState('static/T-shirts/Graphic-Print-V-Neck-front-side.jpg')
+
+    const activeLinkStyle = {
+        "color":"black",
+        "borderBottom": "2px solid black",
+    }
 
 
     return (
@@ -15,13 +26,15 @@ function Product() {
 
             <div className='lg:p-20 py-20' >
                 <div className='flex gap-10 flex-col sm:flex-row'>
-                    <div className=' flex-col gap-10 hidden sm:flex'>
-                        <img className=' w-20' src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'></img>
-                        <img className=' w-20 opacity-20' src='static/T-shirts/Graphic-Print-V-Neck-back-side.png'></img>
-                        <img className=' w-20 opacity-20' src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'></img>
-                    </div>
-                    <div className='relative overflow-hidden sm:self-auto self-center'>
-                        <img className='w-72 sm:w-96 lg:w-96 xl:w-96' src='../public/static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'></img>
+                    <div className='flex px-10 sm:px-0 gap-10'>
+                        <div className=' flex-col gap-10 flex'>
+                            <img className=' w-16 sm:w-24 cursor-pointer' src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg' onClick={(e) => setActiveImgUrl(e.target.src)}></img>
+                            <img className=' w-16 sm:w-24 cursor-pointer opacity-20' src='static/T-shirts/Graphic-Print-V-Neck-back-side.png'  onClick={(e) => setActiveImgUrl(e.target.src)}></img>
+                            <img className=" w-16 sm:w-24 cursor-pointer  opacity-20" src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'  onClick={(e) => setActiveImgUrl(e.target.src)}></img>
+                        </div>
+                        <div className='relative overflow-hidden'>
+                            <img className='w-56 sm:w-96 lg:w-96 xl:w-96' src={activeImgUrl}></img>
+                        </div>
                     </div>
                     <div className='w-full px-10 sm:px-0  md:px-20'>
                         <h1>Graphic Print V-Neck</h1>
@@ -62,18 +75,53 @@ function Product() {
                         </div>
 
                         <div className='flex justify-around py-10'>
-                        <div>
-                            <button className='hover:bg-black hover:text-white hover:cursor-pointer border-2 px-4 py-2 border-black'>Add to cart</button>
-                        </div>
-                        <div>
-                            <button className='hover:bg-black hover:text-white hover:cursor-pointer border-2 px-4 py-2 border-black'>Shop now</button>
-                        </div>
-                           
+                            <div>
+                                <button className='hover:bg-black hover:text-white hover:cursor-pointer border-2 px-4 py-2 border-black'>Add to cart</button>
+                            </div>
+                            <div>
+                                <button className='hover:bg-black hover:text-white hover:cursor-pointer border-2 px-4 py-2 border-black'>Shop now</button>
+                            </div>
+
                         </div>
                     </div>
 
                 </div>
             </div>
+
+
+            <div>
+                <div className='px-10 flex gap-10 md:text-xl font-medium text-zinc-400'>
+                    <div onClick={() => setActiveLink("pd")} className=" hover:cursor-pointer duration-200 pb-3" style={activeLink === "pd" ? activeLinkStyle : null } >Product Description</div>
+                    <div onClick={() => setActiveLink("ai")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "ai" ? activeLinkStyle : null } >Addtional Information</div>
+                    <div onClick={() => setActiveLink("re")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "re" ? activeLinkStyle : null } >Review (0)</div>
+                </div>
+                <hr className='mx-10'></hr>
+            </div>
+
+            <div className='p-10 text-zinc-600'>
+                <p>Coupling a blended linen construction with tailored style, the River Island HR Jasper Blazer will imprint a touch of dapper charm into your after-dark wardrobe. Our model is wearing a size medium blazer, and usually takes a size medium/38L shirt. He is 6’2 1/2” (189cm) tall with a 38” (96 cm) chest and a 31” (78 cm) waist.</p>
+                <ul className='p-5 list-disc'>
+                    <li>Length: 74cm</li>
+                    <li>Regular fit</li>
+                    <li>Notched lapels</li>
+                    <li>Twin button front fastening</li>
+                    <li>Front patch pockets; chest pocket</li>
+                    <li>Internal pockets</li>
+                    <li>Centre-back vent</li>
+                    <li>Please refer to the garment for care instructions.</li>
+                    <li>Length: 74cm</li>
+                    <li>Material: Outer: 50% Linen & 50% Polyamide; Body Lining: 100% Cotton; Lining: 100% Acetate</li>
+                </ul>
+            </div>
+            
+            <div className='px-4'>
+                <h1 className='py-10 text-3xl text-zinc-500 font-bold text-center'>Related Products</h1>
+                <div className='flex sm:gap-10 gap-4 overflow-auto py-5'>
+
+                {data.tshirts.map((tshirts) => (<ProductCard  key={tshirts.id} {...tshirts} />))}
+                </div>
+            </div>
+
         </div>
     )
 }
