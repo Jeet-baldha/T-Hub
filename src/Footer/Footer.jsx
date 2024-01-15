@@ -19,18 +19,18 @@ function Footer() {
                     <hr></hr>
                     <div className='flex gap-5 items-center py-4 sm:py-5'>
                         <IoLocation className='text-3xl' />
-                        <span>Tramba, Rajkot , Gujrat 360020</span>
+                        <span>Rajkot , Gujrat 360020</span>
                     </div>
                     <hr></hr>
                     <div className='flex gap-5 items-center py-5'>
                         <MdEmail className='text-2xl' />
-                        <span>jeetbaldha12@gmail.com</span>
+                        <span>thub.contact@gmail.com</span>
 
                     </div>
                     <hr></hr>
                     <div className='flex gap-5 items-center py-5'>
                         <FaPhoneAlt className='text-xl' />
-                        <span>+91 6351480462</span>
+                        <span>+91 123456790</span>
                         <hr></hr>
                     </div>
                 </div>

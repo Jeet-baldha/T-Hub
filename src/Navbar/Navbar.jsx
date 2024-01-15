@@ -2,6 +2,7 @@ import React from 'react'
 import { FaSearch } from "react-icons/fa";
 import { IoIosCart } from "react-icons/io";
 import { IoPerson } from "react-icons/io5";
+import { NavLink } from 'react-router-dom';
 
 function Navbar() {
     return (
@@ -12,8 +13,8 @@ function Navbar() {
                     <h1 className='text-white md:hidden text-xl'> T-Hub</h1>
                     <div className='flex w-1/2  justify-end gap-6'>
                         <FaSearch className=' text-zinc-300 text-xl hover:text-white hover:cursor-pointer' />
-                        <IoIosCart className=' text-zinc-300 text-xl hover:text-white hover:cursor-pointer' />
-                        <IoPerson className=' text-zinc-300 text-xl hover:text-white hover:cursor-pointer' />
+                        <NavLink to={'/checkout'}><IoIosCart className=' text-zinc-300 text-xl hover:text-white hover:cursor-pointer' /></NavLink>
+                        <NavLink to={'/login'}> <IoPerson className=' text-zinc-300 text-xl hover:text-white hover:cursor-pointer' /></NavLink>
                     </div>
                 </div>
 
@@ -23,10 +24,10 @@ function Navbar() {
 
                 <div className='py-6 pt-0'>
                     <ul className='w-full flex justify-center gap-10 text-black text-opacity-70'>
-                        <li className='hover:cursor-pointer'>Home</li>
-                        <li className='hover:cursor-pointer'>Children</li>
-                        <li className='hover:cursor-pointer'>Men</li>
-                        <li className='hover:cursor-pointer'>Women</li>
+                        <NavLink to={'/'}   className={ ({isActive}) => `hover:cursor-pointer ${isActive && "text-black"} `}>Home</NavLink>
+                        <NavLink to={'/children'}   className={ ({isActive}) => `hover:cursor-pointer ${isActive && "text-black"} `}>Children</NavLink>
+                        <NavLink to={'/men'}   className={ ({isActive}) => `hover:cursor-pointer ${isActive && "text-black"} `}>Men</NavLink>
+                        <NavLink to={'/women'}   className={ ({isActive}) => `hover:cursor-pointer ${isActive && "text-black"} `}>Women</NavLink>
                     </ul>
                 </div>
             </div>

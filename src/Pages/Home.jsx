@@ -5,6 +5,7 @@ import data from '../assets/Data/t-shirt'
 import { IoLocation } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
 import { MdHeadsetMic } from "react-icons/md";
+import { NavLink } from 'react-router-dom';
 
 function Home() {
     return (
@@ -26,8 +27,8 @@ function Home() {
 
             <hr></hr>
     
-            <div className='mt-20 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12 gap-20'>
-                {data.tshirts.map((tshirts) => (<ProductCard key={tshirts.id} {...tshirts} />))}
+            <div className='mt-20 grid p-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12 gap-20'>
+                {data.tshirts.map((tshirts) => (<NavLink to={`/product`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
             </div>
 
             <div className='flex mt-20 py-10 px-10 w-full justify-between flex-col sm:flex-row sm:gap-3 gap-10  text-zinc-400'>

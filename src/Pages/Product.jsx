@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import StarRating from '../components/StarRating'
 import data from '../assets/Data/t-shirt'
 import ProductCard from '../components/ProductCard'
+import { NavLink } from 'react-router-dom';
 
 function Product() {
 
@@ -24,7 +25,7 @@ function Product() {
                 <h1 className='text-white px-10 w-full md:w-2/4 lg:px-20 sm:text-3xl text-xl relative top-1/3'>Casual Coolness: Where Comfort Meets Fashion in Every Tee.</h1>
             </div>
 
-            <div className='lg:p-20 py-40' >
+            <div className='lg:p-20 py-20 sm:py-40' >
                 <div className='flex gap-10 flex-col sm:flex-row'>
                     <div className='flex px-10 sm:px-0 gap-10'>
                         <div className=' flex-col gap-10 flex'>
@@ -90,10 +91,10 @@ function Product() {
 
 
             <div>
-                <div className='px-10 flex gap-10 md:text-xl font-medium text-zinc-400'>
+                <div className='px-10 flex gap-10  md:text-xl font-medium text-zinc-400'>
                     <div onClick={() => setActiveLink("pd")} className=" hover:cursor-pointer duration-200 pb-3" style={activeLink === "pd" ? activeLinkStyle : null } >Product Description</div>
                     <div onClick={() => setActiveLink("ai")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "ai" ? activeLinkStyle : null } >Addtional Information</div>
-                    <div onClick={() => setActiveLink("re")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "re" ? activeLinkStyle : null } >Review (0)</div>
+                    <div onClick={() => setActiveLink("re")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "re" ? activeLinkStyle : null } >Review(0)</div>
                 </div>
                 <hr className='mx-10'></hr>
             </div>
@@ -118,7 +119,7 @@ function Product() {
                 <h1 className='py-10 text-3xl text-zinc-500 font-bold text-center'>Related Products</h1>
                 <div className='flex sm:gap-10 gap-4 overflow-auto py-5'>
 
-                {data.tshirts.map((tshirts) => (<ProductCard  key={tshirts.id} {...tshirts} />))}
+                {data.tshirts.map((tshirts) => (<NavLink key={tshirts.id} to={`/product`}><ProductCard   {...tshirts} /></NavLink>))}
                 </div>
             </div>
 

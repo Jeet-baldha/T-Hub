@@ -5,6 +5,7 @@ import Footer from "./Footer/Footer"
 import Product from "./Pages/Product"
 import Checkout from "./Pages/Checkout"
 import LoginSignup from "./Pages/LoginSignup"
+import {Outlet} from 'react-router-dom'
 
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
   return (
     <>
       <Navbar></Navbar>
-      <LoginSignup />
+      <Outlet></Outlet>
       <Footer></Footer>
     </>
   )
