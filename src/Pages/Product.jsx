@@ -24,7 +24,7 @@ function Product() {
                 <h1 className='text-white px-10 w-full md:w-2/4 lg:px-20 sm:text-3xl text-xl relative top-1/3'>Casual Coolness: Where Comfort Meets Fashion in Every Tee.</h1>
             </div>
 
-            <div className='lg:p-20 py-20' >
+            <div className='lg:p-20 py-40' >
                 <div className='flex gap-10 flex-col sm:flex-row'>
                     <div className='flex px-10 sm:px-0 gap-10'>
                         <div className=' flex-col gap-10 flex'>
