@@ -7,6 +7,8 @@ import Home from './Pages/Home.jsx'
 import Product from './Pages/Product.jsx'
 import Checkout from './Pages/Checkout.jsx'
 import LoginSignup from './Pages/LoginSignup.jsx'
+import Category from './Pages/Category.jsx'
+import Cart from './Pages/Cart.jsx'
 
 const router = createBrowserRouter([
   {
@@ -26,8 +28,24 @@ const router = createBrowserRouter([
         element:<Checkout />
       },
       {
+        path:'/cart',
+        element:<Cart />
+      },
+      {
         path:'/login',
         element:<LoginSignup />
+      },
+      {
+        path:'/category/men',
+        element:<Category/>
+      },
+      {
+        path:'/category/women',
+        element:<Category/>
+      },
+      {
+        path:'/category/children',
+        element:<Category/>
       },
     ]
   }

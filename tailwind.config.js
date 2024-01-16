@@ -10,6 +10,7 @@ export default {
         '128': '500px',
       }
     },
+    
   },
   plugins: [],
 }

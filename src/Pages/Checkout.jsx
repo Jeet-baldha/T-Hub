@@ -1,5 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { TbMessageCircle2 } from "react-icons/tb";
+import { NavLink } from 'react-router-dom';
 function Checkout() {
 
     const state = ['Gujarat','Goa','Maharastra','Tamilnadu','Odisha'];
@@ -15,7 +17,7 @@ function Checkout() {
                     <div className='w-full'>
                         <div className=' bg-zinc-100 py-5 px-10 w-full rounded-sm flex items-center'>
                             <TbMessageCircle2 className=' inline-block text-xl mr-3 text-zinc-500'></TbMessageCircle2>
-                            <span className=' text-zinc-500 font-normal'>Resturning customer ? <a className='text-black hover:cursor-pointer hover:text-zinc-300'>Click here to login </a></span>
+                            <span className=' text-zinc-500 font-normal'>Resturning customer ? <NavLink to={'/login'}  className='text-black hover:cursor-pointer hover:text-zinc-300'>Click here to login </NavLink></span>
                         </div>
 
                         <div className='py-10'>

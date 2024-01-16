@@ -1,6 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import ProductCard from '../components/ProductCard'
-import Button from '../components/Button'
 import data from '../assets/Data/t-shirt'
 import { IoLocation } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
@@ -13,21 +13,19 @@ function Home() {
 
             <div className='bg-image h-72 lg:h-128 md:h-96 flex flex-col '>
                 <div className=' relative top-1/3'>
-                <h1 className='text-white px-10 w-3/4 md:w-2/4 lg:px-20 sm:text-3xl text-xl '>T-Hub - Your Ultimate T-Shirt Destination</h1>
-                <p className=' px-10 py-4 lg:px-20 md:w-3/4 w-full text-white'>Discover Style, Express Yourself – T-Hub, Where Every Thread Tells a Story</p>
-                <button className='lg:mx-20 mx-10 px-4 py-2 text-white hover:bg-white hover:text-black hover:cursor-pointer'>Shop now</button>
+                    <h1 className='text-white px-10 w-3/4 md:w-2/4 lg:px-20 sm:text-3xl text-xl '>T-Hub - Your Ultimate T-Shirt Destination</h1>
+                    <p className=' px-10 py-4 lg:px-20 md:w-3/4 w-full text-white'>Discover Style, Express Yourself – T-Hub, Where Every Thread Tells a Story</p>
+                    <button className='lg:mx-20 mx-10 px-4 py-2 text-white hover:bg-white hover:text-black hover:cursor-pointer'>Shop now</button>
                 </div>
             </div>
-
-
             <div className='py-20 pb-10'>
                 <h1 className='text-center pb-8 font-bold text-xl font-sans'>Welcome to T-Hub Store</h1>
-                <h1 className='md:px-20 px-5 text-center text-zinc-900'> The one-stop hub for all your t-shirt needs! Explore our curated collection of trendy and unique t-shirts designed to elevate your style. Whether you're into casual comfort, statement graphics, or personalized prints, T-Hub has something for everyone. Shop the latest trends, express your individuality, and redefine your wardrobe with our quality and fashionable t-shirts.</h1>
+                <h1 className='md:px-20 px-5 text-center text-zinc-900'> The one-stop hub for all your t-shirt needs! Explore our curated collection of trendy and unique t-shirts designed to elevate your style. Whether you are into casual comfort, statement graphics, or personalized prints, T-Hub has something for everyone. Shop the latest trends, express your individuality, and redefine your wardrobe with our quality and fashionable t-shirts.</h1>
             </div>
 
             <hr></hr>
-    
-            <div className='mt-20 grid p-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12 gap-20'>
+
+            <div className='mt-20 grid p-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12 gap-20 min-[500px]:grid-cols-3'>
                 {data.tshirts.map((tshirts) => (<NavLink to={`/product`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
             </div>
 
@@ -39,7 +37,7 @@ function Home() {
                         <h1 className=' font-bold pl-3 text-xl'>  FREE SHIPPING</h1>
                     </div>
                     <div>
-                    <p>We provide a service free shipping for all oder over $100 and shipping on the worldwide. Safety and reliability.</p>
+                        <p>We provide a service free shipping for all oder over $100 and shipping on the worldwide. Safety and reliability.</p>
                     </div>
                 </div>
                 <div className=' w-full sm:w-1/3'>
@@ -48,7 +46,7 @@ function Home() {
                         <h1 className=' font-bold pl-3 text-xl'>SUPORT 24/7</h1>
                     </div>
                     <div>
-                    <p>If you have any question about our product or our quality services, You can contat us whenever we alway support for you 24/7.</p>
+                        <p>If you have any question about our product or our quality services, You can contat us whenever we alway support for you 24/7.</p>
                     </div>
                 </div>
                 <div className=' w-full sm:w-1/3'>
@@ -57,7 +55,7 @@ function Home() {
                         <h1 className=' font-bold pl-3 text-xl'>MONEY BACK</h1>
                     </div>
                     <div>
-                    <p>With any our product that have problem with color. material, etc. We commitment return 100% money for customer</p>
+                        <p>With any our product that have problem with color. material, etc. We commitment return 100% money for customer</p>
                     </div>
                 </div>
 

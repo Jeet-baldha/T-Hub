@@ -1,8 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react'
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { IoLocation } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
-import { FaDiscord, FaInstagram, FaPhoneAlt, FaTwitter } from "react-icons/fa";
+import { FaDiscord, FaPhoneAlt } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
@@ -49,14 +50,14 @@ function Footer() {
                 </div>
                 <div>
                     <h1 className='font-bold pb-2 md:pb-10 text-black'>Conatact us</h1>
-                    <p className=' text-justify pb-5'>Have questions, feedback, or just want to say hello? Reach out to our friendly customer support team. We're here to assist you on your T-Hub journey.</p>
+                    <p className='text-justify pb-5' >Have questions, feedback, or just want to say hello? Reach out to our friendly customer support team. We are here to assist you on your T-Hub journey.</p>
                     <hr></hr>
                     <div className='py-5 flex justify-between text-3xl'>
-                        <FaFacebook />
-                        <AiFillInstagram />
-                        <FaSquareXTwitter />
-                        <FaYoutube />
-                        <FaDiscord />
+                        <FaFacebook className='hover:cursor-pointer hover:text-black duration-150' />
+                        <AiFillInstagram className='hover:cursor-pointer hover:text-black duration-150' />
+                        <FaSquareXTwitter className='hover:cursor-pointer hover:text-black duration-150' />
+                        <FaYoutube className='hover:cursor-pointer hover:text-black duration-150' />
+                        <FaDiscord className='hover:cursor-pointer hover:text-black duration-150' />
                     </div>
                 </div>
             </div>
