@@ -1,13 +1,32 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductCard from '../components/ProductCard'
 import data from '../assets/Data/t-shirt'
 import { IoLocation } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
 import { MdHeadsetMic } from "react-icons/md";
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 
 function Home() {
+
+    const [products,setProducts] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+
+            try {
+                const dataP = await axios.get(`http://localhost:3000/product/toprated`)
+                setProducts(dataP.data);
+            } catch (error) {
+                console.log(error);
+            }
+            
+        }
+        fetchData();   
+        
+    },[])
+
     return (
         <div className='xl:mx-28 bg-white sm:p-10 pt-0 overflow-hidden'>
 
@@ -26,7 +45,7 @@ function Home() {
             <hr></hr>
 
             <div className='mt-20 grid p-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12 gap-20 min-[500px]:grid-cols-3'>
-                {data.tshirts.map((tshirts) => (<NavLink to={`/product`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
+                {products.map((tshirts) => (<NavLink to={`/product/${tshirts.slug}`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
             </div>
 
             <div className='flex mt-20 py-10 px-10 w-full justify-between flex-col sm:flex-row sm:gap-3 gap-10  text-zinc-400'>

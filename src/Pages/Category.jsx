@@ -1,10 +1,32 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import data from '../assets/Data/t-shirt'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
+import axios from 'axios'
 import ProductCard from '../components/ProductCard'
 
 function Category() {
+
+    const [products, setProducts] = useState([]);
+    let { category } = useParams();
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            try {
+                const dataP = await axios.get(`http://localhost:3000/${category}/products`)
+                setProducts(dataP.data);
+            } catch (error) {
+                console.log(error);
+            }
+            
+        }
+        fetchData();   
+        
+
+    }, [category])
+
     return (
         <div className='xl:mx-28 bg-white sm:p-10 pt-0 overflow-hidden'>
             <div className='product-bg-image h-40 lg:h-96 md:h-96'>
@@ -22,8 +44,7 @@ function Category() {
                 </div>
             </div>
             <div className=' grid xl:p-10 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-12 :gap-10 md:gap-20 min-[500px]:grid-cols-3'>
-                {data.tshirts.map((tshirts) => (<NavLink to={`/product`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
-                {data.tshirts.map((tshirts) => (<NavLink to={`/product`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
+                {products.map((tshirts) => (<NavLink to={`/product/${tshirts.slug}`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
             </div>
         </div>
     )

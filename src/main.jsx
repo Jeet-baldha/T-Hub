@@ -12,40 +12,32 @@ import Cart from './Pages/Cart.jsx'
 
 const router = createBrowserRouter([
   {
-    path:'',
-    element:<App />,
-    children:[
+    path: '',
+    element: <App />,
+    children: [
       {
-        path:'/',
-        element:<Home />
+        path: '/',
+        element: <Home />
       },
       {
-        path:'/product/',
-        element:<Product />
+        path: '/product/:id',
+        element: <Product />
       },
       {
-        path:'/checkout',
-        element:<Checkout />
+        path: '/checkout',
+        element: <Checkout />
       },
       {
-        path:'/cart',
-        element:<Cart />
+        path: '/cart',
+        element: <Cart />
       },
       {
-        path:'/login',
-        element:<LoginSignup />
+        path: '/login',
+        element: <LoginSignup />
       },
       {
-        path:'/category/men',
-        element:<Category/>
-      },
-      {
-        path:'/category/women',
-        element:<Category/>
-      },
-      {
-        path:'/category/children',
-        element:<Category/>
+        path: '/category/:category',
+        element: <Category />
       },
     ]
   }

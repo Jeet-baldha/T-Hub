@@ -1,17 +1,55 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import StarRating from '../components/StarRating'
 import data from '../assets/Data/t-shirt'
 import ProductCard from '../components/ProductCard'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 function Product() {
+
+    const [product,setProduct] = useState({});
+    const [activeLink, setActiveLink] = useState("pd");
+    const [activeImgUrl, setActiveImgUrl] = useState("")
+    const {id} = useParams()
+
+    useEffect(() => {
+        const fetchData = async () => {
+
+            try {
+                const dataP = await axios.get(`http://localhost:3000/product/${id}`)
+                setProduct(dataP.data);
+            } catch (error) {
+                console.log(error);
+            }
+            
+        }
+        fetchData();   
+        
+    },[])
+    useEffect(() => {
+        const fetchData = async () => {
+
+            try {
+                const dataP = await axios.get(`http://localhost:3000/product/${id}`)
+                setProduct(dataP.data);
+            } catch (error) {
+                console.log(error);
+            }
+            
+        }
+        fetchData();   
+        
+    },[id,product])
+
+    useEffect(() => {
+        setActiveImgUrl(product.frontImage);
+    },[product])
 
     const sizes = ['S', 'M', 'L', 'XL'];
     const colors = ['red', 'green', 'blue', 'yellow'];
 
-    const [activeLink, setActiveLink] = useState("pd");
-    const [activeImgUrl, setActiveImgUrl] = useState('static/T-shirts/Graphic-Print-V-Neck-front-side.jpg')
+   
 
     const activeLinkStyle = {
         "color":"black",
@@ -29,22 +67,22 @@ function Product() {
                 <div className='flex gap-10 flex-col sm:flex-row'>
                     <div className='flex px-10 sm:px-0 gap-10'>
                         <div className=' flex-col gap-10 flex'>
-                            <img className=' w-16 sm:w-24 cursor-pointer' src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg' onClick={(e) => setActiveImgUrl(e.target.src)}></img>
-                            <img className=' w-16 sm:w-24 cursor-pointer opacity-20' src='static/T-shirts/Graphic-Print-V-Neck-back-side.png'  onClick={(e) => setActiveImgUrl(e.target.src)}></img>
-                            <img className=" w-16 sm:w-24 cursor-pointer  opacity-20" src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'  onClick={(e) => setActiveImgUrl(e.target.src)}></img>
+                            <img className=' w-16 sm:w-24 cursor-pointer' src={product.frontImage} onClick={(e) => setActiveImgUrl(e.target.src)}></img>
+                            <img className=' w-16 sm:w-24 cursor-pointer opacity-20' src={product.backImage}  onClick={(e) => setActiveImgUrl(e.target.src)}></img>
+                            {/* <img className=" w-16 sm:w-24 cursor-pointer  opacity-20" src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'  onClick={(e) => setActiveImgUrl(e.target.src)}></img> */}
                         </div>
                         <div className='relative overflow-hidden'>
                             <img className='w-56 sm:w-96 lg:w-96 xl:w-96' src={activeImgUrl}></img>
                         </div>
                     </div>
                     <div className='w-full px-10 sm:px-0  md:px-20'>
-                        <h1>Graphic Print V-Neck</h1>
+                        <h1>{product.name}</h1>
                         <div className='flex gap-5'>
-                            <StarRating></StarRating>
-                            <span className='text-zinc-400'>0 Review(s)</span>
+                            <StarRating rating={product.rating}></StarRating>
+                            <span className='text-zinc-400'> {product.reviews ? product.reviews.length : 0} Review(s)</span>
                         </div>
-                        <p className='font-bold text-xl pt-5'>&#x20b9; 29.99</p>
-                        <p className='py-5'>Available: <span className=' text-emerald-500'>In stock</span></p>
+                        <p className='font-bold text-xl pt-5'>&#x20b9; {product.price}</p>
+                        <p className='py-5'>Available: {product.stock > 1 ?<span className=' text-emerald-500'>In stock</span> : <span className=' text-red-500'>out of stock</span> }  </p>
                         <hr></hr>
                         <p className='py-5 text-zinc-500 text-justify'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum eros idoni rutrum fermentum. Proin nec felis dui. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
                         <hr></hr>
@@ -72,7 +110,7 @@ function Product() {
                         </div>
 
                         <div>
-                            <p className=' text-zinc-400 sm:text-xl'>Categories: <span className=' text-zinc-600'> Men, T-shirt, Short T-Shirt</span> </p>
+                            <p className=' text-zinc-400 sm:text-xl'>Categories: <span className=' text-zinc-600'> {product.category}</span> </p>
                         </div>
 
                         <div className='flex justify-around py-10'>
@@ -119,7 +157,7 @@ function Product() {
                 <h1 className='py-10 text-3xl text-zinc-500 font-bold text-center'>Related Products</h1>
                 <div className='flex sm:gap-10 gap-4 overflow-auto py-5'>
 
-                {data.tshirts.map((tshirts) => (<NavLink key={tshirts.id} to={`/product`}><ProductCard   {...tshirts} /></NavLink>))}
+                {data.tshirts.map((tshirts) => (<NavLink key={tshirts.id} to={`/product/${tshirts.slug}`}><ProductCard   {...tshirts} /></NavLink>))}
                 </div>
             </div>
 
