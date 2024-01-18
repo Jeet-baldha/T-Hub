@@ -21,7 +21,7 @@ function ProductCard({
 
 
     return (
-        <div className={` sm:w-36 justify-self-center w-28  md:w-52 h-full  hover:cursor-pointer shadow-xl sm:shadow-2xl pb-4 rounded-md ${className}`}
+        <div className={` sm:w-32 justify-self-center w-32 p-1  md:w-52 h-full  hover:cursor-pointer shadow-xl sm:shadow-2xl pb-4 rounded-md ${className}`}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}>
             <div className=' relativeh h-52 md:w-52 sm:w-36 w-32  sm:h-72 md:h-96 overflow-hidden'>

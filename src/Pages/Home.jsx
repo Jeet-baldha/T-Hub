@@ -44,7 +44,7 @@ function Home() {
 
             <hr></hr>
 
-            <div className='mt-20 grid p-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12 gap-20 min-[500px]:grid-cols-3'>
+            <div className='mt-20 grid p-14 justify-center grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12  min-[500px]:grid-cols-3'>
                 {products.map((tshirts) => (<NavLink to={`/product/${tshirts.slug}`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
             </div>
 

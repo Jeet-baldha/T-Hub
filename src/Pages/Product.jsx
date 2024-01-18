@@ -9,30 +9,16 @@ import axios from 'axios';
 function Product() {
 
     const [product,setProduct] = useState({});
+    const [activeImgUrl, setActiveImgUrl] = useState("");
     const [activeLink, setActiveLink] = useState("pd");
-    const [activeImgUrl, setActiveImgUrl] = useState("")
     const {id} = useParams()
-
     useEffect(() => {
         const fetchData = async () => {
-
-            try {
-                const dataP = await axios.get(`http://localhost:3000/product/${id}`)
-                setProduct(dataP.data);
-            } catch (error) {
-                console.log(error);
-            }
             
-        }
-        fetchData();   
-        
-    },[])
-    useEffect(() => {
-        const fetchData = async () => {
-
             try {
                 const dataP = await axios.get(`http://localhost:3000/product/${id}`)
                 setProduct(dataP.data);
+                
             } catch (error) {
                 console.log(error);
             }
@@ -43,8 +29,8 @@ function Product() {
     },[id,product])
 
     useEffect(() => {
-        setActiveImgUrl(product.frontImage);
-    },[product])
+            setActiveImgUrl(product.frontImage);
+    },[id,product.frontImage])
 
     const sizes = ['S', 'M', 'L', 'XL'];
     const colors = ['red', 'green', 'blue', 'yellow'];
@@ -67,9 +53,15 @@ function Product() {
                 <div className='flex gap-10 flex-col sm:flex-row'>
                     <div className='flex px-10 sm:px-0 gap-10'>
                         <div className=' flex-col gap-10 flex'>
-                            <img className=' w-16 sm:w-24 cursor-pointer' src={product.frontImage} onClick={(e) => setActiveImgUrl(e.target.src)}></img>
-                            <img className=' w-16 sm:w-24 cursor-pointer opacity-20' src={product.backImage}  onClick={(e) => setActiveImgUrl(e.target.src)}></img>
-                            {/* <img className=" w-16 sm:w-24 cursor-pointer  opacity-20" src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'  onClick={(e) => setActiveImgUrl(e.target.src)}></img> */}
+                            <img className= {`w-16 sm:w-24 cursor-pointer`}
+                            src={product.frontImage}  
+                            onClick={(e) => setActiveImgUrl(e.target.src)}>
+                            </img>
+                            <img className=' w-16 sm:w-24 cursor-pointer' src={product.backImage} 
+                            onClick={(e) => setActiveImgUrl(e.target.src)}
+                            >
+
+                            </img>
                         </div>
                         <div className='relative overflow-hidden'>
                             <img className='w-56 sm:w-96 lg:w-96 xl:w-96' src={activeImgUrl}></img>
