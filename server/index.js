@@ -92,22 +92,19 @@ const register = (req, res) => {
         } else {
             // Correct the structure of passport.authenticate
             passport.authenticate('local')(req, res, () => {
-                res.send(newUser);
+                res.send(newUser._id);
             });
         }
     });
 };
 app.post('/user/login', (req, res, next) => {
-    passport.authenticate('local', {  
-    }, (err, user, info) => {
+    passport.authenticate('local', (err, user, info) => {
         if (err) {
             return next(err);
         }
-        if (!user) {
-            // Authentication failure
+        if (!user) {   
             return res.status(401).json({ message: info.message });
         }
-        // Authentication success
         req.logIn(user, (loginErr) => {
             if (loginErr) {
                 return next(loginErr);
@@ -128,6 +125,29 @@ app.get('/user/logout',(req,res,next) => {
         if(err) {return next(err);}
         res.send("user logout")
     })
+})
+
+app.get('/user',(req,res) => {
+
+    if(req.isAuthenticated){
+        console.log(req.user);
+        res.send(req.user);
+    }
+    else{
+        res.send("user not found");
+    }
+
+})
+
+app.get('/user/order',async (req,res) => {
+
+    if(req.isAuthenticated){
+        res.send(req.user);
+    }
+    else{
+        res.send("please login first");
+    }
+
 })
 
 
