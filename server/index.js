@@ -97,6 +97,7 @@ const register = (req, res) => {
         }
     });
 };
+
 app.post('/user/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
@@ -114,10 +115,7 @@ app.post('/user/login', (req, res, next) => {
     })(req, res, next);
 });
 
-
-
 app.post('/user/register',register);
-
 
 
 app.get('/user/logout',(req,res,next) => {
@@ -129,8 +127,7 @@ app.get('/user/logout',(req,res,next) => {
 
 app.get('/user',(req,res) => {
 
-    if(req.isAuthenticated){
-        console.log(req.user);
+    if(req.isAuthenticated()){
         res.send(req.user);
     }
     else{
@@ -141,8 +138,9 @@ app.get('/user',(req,res) => {
 
 app.get('/user/order',async (req,res) => {
 
-    if(req.isAuthenticated){
-        res.send(req.user);
+    if(req.isAuthenticated()){
+        const user = await User.findById(req.user._id);
+       res.send(user.orders);
     }
     else{
         res.send("please login first");
@@ -150,7 +148,42 @@ app.get('/user/order',async (req,res) => {
 
 })
 
+app.post('/user/order',async (req,res) => {
 
+    if(req.isAuthenticated()){
+
+        const productID = req.body.productID;
+
+        if(productID === undefined){
+            res.send("product not found");
+        }
+
+        const order = {
+            orderID:"",
+            orderStatus:"pending",
+            productID:productID,
+            price:124,
+            address:"",
+            trackId:"",
+            paymentType:"UPI",
+            orderDate: new Date().getDate()
+        }
+
+        const userID = req.user._id;
+
+        const result = await User.updateOne(
+            { _id:userID},
+            { $push:{orders:order}}
+        )
+
+        res.send(result);
+    }
+    else{
+        res.send("please login");
+    }
+        
+
+})
 
 app.get('/', (req, res) => {
     res.send('welcome');
@@ -172,6 +205,46 @@ app.get('/:category/products', (req, res) => {
 app.get('/product/:slug', (req, res) => {
     const products = data.tshirts.find((tshirts) => tshirts.slug === req.params.slug);
     res.send(products);
+})
+
+app.post('/product/addToCart', async (req, res) => {
+
+    if(req.isAuthenticated){
+
+        
+        const productID = req.body.productID;
+        const userID = req.user._id;
+        
+        const user = await User.findById(userID);
+        
+        if(user.cart.includes(productID)){
+            res.send("You already have this product in your cart");
+        }
+        else{
+            const result = await User.updateOne(
+                { _id :userID},
+                { $push :{cart : productID}}
+                )
+                
+                res.send(result);
+            }
+            
+        }
+        else{
+            res.send(" please login first");
+        }
+})
+
+app.get('/user/cart', async (req, res) => {
+
+    if(req.isAuthenticated()){
+        const user = await User.findById(req.user._id);
+        res.send(user.cart);
+    }
+    else{
+        res.send("You must be logged in");
+    }
+
 })
 
 app.listen(PORT, () => {

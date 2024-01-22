@@ -149,7 +149,7 @@ function Product() {
                 <h1 className='py-10 text-3xl text-zinc-500 font-bold text-center'>Related Products</h1>
                 <div className='flex sm:gap-10 gap-4 overflow-auto py-5'>
 
-                {data.tshirts.map((tshirts) => (<NavLink key={tshirts.id} to={`/product/${tshirts.slug}`}><ProductCard   {...tshirts} /></NavLink>))}
+                {data.tshirts.map((tshirts) => (<div key={tshirts.id} ><ProductCard   {...tshirts} /></div>))}
                 </div>
             </div>
 

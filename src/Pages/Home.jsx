@@ -45,7 +45,7 @@ function Home() {
             <hr></hr>
 
             <div className='mt-20 grid p-14 justify-center grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12  min-[500px]:grid-cols-3'>
-                {products.map((tshirts) => (<NavLink to={`/product/${tshirts.slug}`} key={tshirts.id}><ProductCard  {...tshirts} /></NavLink>))}
+                {products.map((tshirts) => (<div key={tshirts.id}><ProductCard  {...tshirts} /></div>))}
             </div>
 
             <div className='flex mt-20 py-10 px-10 w-full justify-between flex-col sm:flex-row sm:gap-3 gap-10  text-zinc-400'>
