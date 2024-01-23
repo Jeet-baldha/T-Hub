@@ -12,6 +12,7 @@ import passportLocalMongoose from 'passport-local-mongoose'
 
 
 
+
 const app = express();
 app.use(cors());
 const PORT = 3000;
@@ -32,7 +33,6 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 
 mongoose.connect("mongodb://localhost:27017/T-hub");
@@ -159,14 +159,14 @@ app.post('/user/order',async (req,res) => {
         }
 
         const order = {
-            orderID:"",
+            orderID: new Date().getTime() + req.user._id,
             orderStatus:"pending",
             productID:productID,
             price:124,
             address:"",
             trackId:"",
             paymentType:"UPI",
-            orderDate: new Date().getDate()
+            orderDate: new Date().toLocaleDateString()
         }
 
         const userID = req.user._id;
@@ -176,7 +176,7 @@ app.post('/user/order',async (req,res) => {
             { $push:{orders:order}}
         )
 
-        res.send(result);
+        res.send(order);
     }
     else{
         res.send("please login");
@@ -207,7 +207,7 @@ app.get('/product/:slug', (req, res) => {
     res.send(products);
 })
 
-app.post('/product/addToCart', async (req, res) => {
+app.post('/user/addToCart', async (req, res) => {
 
     if(req.isAuthenticated){
 
@@ -216,6 +216,10 @@ app.post('/product/addToCart', async (req, res) => {
         const userID = req.user._id;
         
         const user = await User.findById(userID);
+
+        const product = {
+            productID:productID
+        }
         
         if(user.cart.includes(productID)){
             res.send("You already have this product in your cart");
@@ -223,7 +227,7 @@ app.post('/product/addToCart', async (req, res) => {
         else{
             const result = await User.updateOne(
                 { _id :userID},
-                { $push :{cart : productID}}
+                { $push :{cart : product}}
                 )
                 
                 res.send(result);
@@ -243,6 +247,25 @@ app.get('/user/cart', async (req, res) => {
     }
     else{
         res.send("You must be logged in");
+    }
+
+})
+
+app.post('/user/cart/deleteItem', async (req, res) => {
+
+    const productID = req.body.productID;
+
+    if(req.isAuthenticated()){
+
+        const result = await User.updateMany(
+            { _id: req.user._id },
+            { $pull: { cart: { productID: productID } } }
+            );
+
+            res.send("item deleted");
+    }
+    else{
+        res.send("login first");
     }
 
 })
