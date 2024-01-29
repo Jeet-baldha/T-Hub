@@ -1,11 +1,37 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
+import React, { useEffect,useId,useState } from 'react'
 import StarRating from '../components/StarRating'
 import { NavLink } from 'react-router-dom'
-import { MdDeleteForever } from "react-icons/md";
-import { IoBagCheckOutline } from "react-icons/io5";
-
+import CartProduct from '../components/CartProduct'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
 function Cart() {
+
+    const [cartData,setCartData] = useState([]);
+    const userID = useSelector(state => state.auth.userId);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                 const data = await axios.get('http://localhost:3000/user/cart',{
+                    headers:{
+                        "Content-Type":'application/json',
+                        "userID":userID
+                    }
+                 })
+
+                 console.log(data.data);
+                 setCartData(data.data);
+            } catch (error) {
+                console.log(error);
+            }
+            
+        }
+
+            fetchData();   
+    },[userID])
+
     return (
         <div className='xl:mx-28 bg-white sm:p-10 pt-0 overflow-hidden'>
             <div className='product-bg-image h-40 lg:h-96 md:h-96'>
@@ -15,44 +41,7 @@ function Cart() {
             <div className='mt-10 p-5 sm:mt-20 lg:p-10 '>
                 <div className=' flex w-full justify-between gap-5 sm:flex-row flex-col'>
                     <div className=' flex justify-center flex-wrap gap-y-5 w-full '>
-                        <div className=' bg-zinc-50 p-5 w-full flex sm:gap-20 gap-10'>
-                            <div className=' w-20 lg:w-32'>
-                                <img src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'></img>
-                            </div>
-                            <div className='lg:p-5 text-sm sm:text-base'>
-                                <h1 className=' xl:text-2xl font-bold'>Graphic Print V Neck</h1>
-                                <div>
-                                    <span className=' font-bold pr-2'>&#x20b9;29.99</span>
-                                    <span className='line-through text-gray-400'>&#x20b9;50</span>
-                                </div>
-                                <StarRating />
-                                <span>Review (0)</span>
-                                <p className='py-1'>Available: <span className=' text-emerald-500'>In stock</span></p>
-                                <div className=' flex gap-5 font-medium'>
-                                    <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white'><MdDeleteForever className=' inline-block mr-1' /> Delete</button>
-                                    <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white'><IoBagCheckOutline className=' inline-block mr-1' /> Buy</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className=' bg-zinc-50 p-5 w-full flex sm:gap-20 gap-10'>
-                            <div className=' w-20 lg:w-32'>
-                                <img src='static/T-shirts/Graphic-Print-V-Neck-front-side.jpg'></img>
-                            </div>
-                            <div className='lg:p-5 text-sm sm:text-base'>
-                                <h1 className=' xl:text-2xl font-bold'>Graphic Print V Neck</h1>
-                                <div>
-                                    <span className=' font-bold pr-2'>&#x20b9;29.99</span>
-                                    <span className='line-through text-gray-400'>&#x20b9;50</span>
-                                </div>
-                                <StarRating />
-                                <span>Review (0)</span>
-                                <p className='py-1'>Available: <span className=' text-emerald-500'>In stock</span></p>
-                                <div className=' flex gap-5 font-medium'>
-                                    <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white'><MdDeleteForever className=' inline-block mr-1' /> Delete</button>
-                                    <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white'><IoBagCheckOutline className=' inline-block mr-1' /> Buy</button>
-                                </div>
-                            </div>
-                        </div>
+                       {cartData.map((product) => <CartProduct key={product} productId={product} />)}
                     </div>
                     <div className=' w-full sm:w-96 bg-zinc-50 h-full p-5'>
                         <h1 className='text-base font-medium text-zinc-500 pb-2'> PRICE DETAILS</h1>

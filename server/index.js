@@ -21,11 +21,11 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 app.use(session({
-    secret:"T-huun has no secret",
-    resave:false,
-    saveUninitialized:false,
-    cookie:{
-        maxAge:24*60*60*1000
+    secret: "T-huun has no secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000
     }
 }))
 
@@ -39,13 +39,13 @@ mongoose.connect("mongodb://localhost:27017/T-hub");
 
 
 const userSchema = new mongoose.Schema({
-    username:String,
-    password:String,
-    address:String,
-    phone:String,
-    orders:[],
-    reviews:[],
-    cart:[]
+    username: String,
+    password: String,
+    address: String,
+    phone: String,
+    orders: [],
+    reviews: [],
+    cart: []
 })
 
 userSchema.plugin(passportLocalMongoose)
@@ -53,8 +53,8 @@ userSchema.plugin(passportLocalMongoose)
 const User = mongoose.model('user', userSchema);
 
 passport.use(User.createStrategy());
-passport.serializeUser((User,done) => {done(null,User);})
-passport.deserializeUser((User,done) => {done(null,User);})
+passport.serializeUser((User, done) => { done(null, User); })
+passport.deserializeUser((User, done) => { done(null, User); })
 
 
 
@@ -103,85 +103,92 @@ app.post('/user/login', (req, res, next) => {
         if (err) {
             return next(err);
         }
-        if (!user) {   
-            return res.status(401).json({ message: info.message });
+        if (!user) {
+            return res.status(401).json({
+                message: info.message,
+                authenticated: false
+            });
         }
         req.logIn(user, (loginErr) => {
             if (loginErr) {
                 return next(loginErr);
             }
-            return res.status(200).json({ message: 'User login successful' });
+            return res.status(200).json({ 
+                message: 'User login successful',
+                authenticated: true,
+                userId:user._id,
+            });
         });
     })(req, res, next);
 });
 
-app.post('/user/register',register);
+app.post('/user/register', register);
 
 
-app.get('/user/logout',(req,res,next) => {
+app.get('/user/logout', (req, res, next) => {
     req.logout((err) => {
-        if(err) {return next(err);}
+        if (err) { return next(err); }
         res.send("user logout")
     })
 })
 
-app.get('/user',(req,res) => {
+app.get('/user', (req, res) => {
 
-    if(req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         res.send(req.user);
     }
-    else{
+    else {
         res.send("user not found");
     }
 
 })
 
-app.get('/user/order',async (req,res) => {
+app.get('/user/order', async (req, res) => {
 
-    if(req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         const user = await User.findById(req.user._id);
-       res.send(user.orders);
+        res.send(user.orders);
     }
-    else{
+    else {
         res.send("please login first");
     }
 
 })
 
-app.post('/user/order',async (req,res) => {
+app.post('/user/order', async (req, res) => {
 
-    if(req.isAuthenticated()){
+    if (req.isAuthenticated()) {
 
         const productID = req.body.productID;
 
-        if(productID === undefined){
+        if (productID === undefined) {
             res.send("product not found");
         }
 
         const order = {
             orderID: new Date().getTime() + req.user._id,
-            orderStatus:"pending",
-            productID:productID,
-            price:124,
-            address:"",
-            trackId:"",
-            paymentType:"UPI",
+            orderStatus: "pending",
+            productID: productID,
+            price: 124,
+            address: "",
+            trackId: "",
+            paymentType: "UPI",
             orderDate: new Date().toLocaleDateString()
         }
 
         const userID = req.user._id;
 
         const result = await User.updateOne(
-            { _id:userID},
-            { $push:{orders:order}}
+            { _id: userID },
+            { $push: { orders: order } }
         )
 
         res.send(order);
     }
-    else{
+    else {
         res.send("please login");
     }
-        
+
 
 })
 
@@ -207,66 +214,75 @@ app.get('/product/:slug', (req, res) => {
     res.send(products);
 })
 
+app.get('/product', (req, res) => {
+    console.log(req.headers.id);
+    const products = data.tshirts.find((tshirts) => tshirts.id == req.headers.id);
+    res.send(products);
+})
+
 app.post('/user/addToCart', async (req, res) => {
 
-    if(req.isAuthenticated){
+    if (req.isAuthenticated) {
 
-        
+
         const productID = req.body.productID;
         const userID = req.user._id;
-        
+
         const user = await User.findById(userID);
 
         const product = {
-            productID:productID
+            productID: productID
         }
-        
-        if(user.cart.includes(productID)){
+
+        if (user.cart.includes(productID)) {
             res.send("You already have this product in your cart");
         }
-        else{
+        else {
             const result = await User.updateOne(
-                { _id :userID},
-                { $push :{cart : product}}
-                )
-                
-                res.send(result);
-            }
-            
+                { _id: userID },
+                { $push: { cart: product } }
+            )
+
+            res.send(result);
         }
-        else{
-            res.send(" please login first");
-        }
+
+    }
+    else {
+        res.send(" please login first");
+    }
 })
 
 app.get('/user/cart', async (req, res) => {
 
-    if(req.isAuthenticated()){
-        const user = await User.findById(req.user._id);
+    // console.log(req.headers);
+    if (req.headers.userid) {
+        const user = await User.findById(req.headers.userid);
         res.send(user.cart);
     }
-    else{
-        res.send("You must be logged in");
+    else {
+        res.send({message:"You must be logged in"});
     }
 
 })
 
 app.post('/user/cart/deleteItem', async (req, res) => {
 
-    const productID = req.body.productID;
-
-    if(req.isAuthenticated()){
-
-        const result = await User.updateMany(
-            { _id: req.user._id },
-            { $pull: { cart: { productID: productID } } }
+    const productID = req.body.productId;
+    console.log(req.body);
+        try {
+            const result = await User.updateMany(
+                { _id: req.user._id },
+                { $pull: { cart: { productID: productID } } }
             );
-
+            console.log(result);
             res.send("item deleted");
-    }
-    else{
-        res.send("login first");
-    }
+
+        } catch (error) {
+            res.send(error.message);
+        }
+
+        
+
 
 })
 

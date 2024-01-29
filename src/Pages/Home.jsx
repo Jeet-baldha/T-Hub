@@ -14,7 +14,6 @@ function Home() {
 
     useEffect(() => {
         const fetchData = async () => {
-
             try {
                 const dataP = await axios.get(`http://localhost:3000/product/toprated`)
                 setProducts(dataP.data);
