@@ -92,7 +92,11 @@ const register = (req, res) => {
         } else {
             // Correct the structure of passport.authenticate
             passport.authenticate('local')(req, res, () => {
-                res.send(newUser._id);
+                res.send({
+                message: 'User register successful',
+                authenticated: true,
+                userId:newUser._id,
+                });
             });
         }
     });
@@ -215,18 +219,17 @@ app.get('/product/:slug', (req, res) => {
 })
 
 app.get('/product', (req, res) => {
-    console.log(req.headers.id);
     const products = data.tshirts.find((tshirts) => tshirts.id == req.headers.id);
     res.send(products);
 })
 
 app.post('/user/addToCart', async (req, res) => {
 
-    if (req.isAuthenticated) {
+    if (req.headers.userid) {
 
 
         const productID = req.body.productID;
-        const userID = req.user._id;
+        const userID = req.headers.userid;
 
         const user = await User.findById(userID);
 
@@ -235,20 +238,19 @@ app.post('/user/addToCart', async (req, res) => {
         }
 
         if (user.cart.includes(productID)) {
-            res.send("You already have this product in your cart");
+            res.send({message:"You already have this product in your cart"});
         }
         else {
             const result = await User.updateOne(
                 { _id: userID },
-                { $push: { cart: product } }
+                { $push: { cart: productID } }
             )
-
-            res.send(result);
+            res.send({message:"added to cart"});
         }
 
     }
     else {
-        res.send(" please login first");
+        res.send({message:"please login first"});
     }
 })
 
@@ -267,15 +269,13 @@ app.get('/user/cart', async (req, res) => {
 
 app.post('/user/cart/deleteItem', async (req, res) => {
 
-    const productID = req.body.productId;
-    console.log(req.body);
+    const productID = req.body.productID;
         try {
             const result = await User.updateMany(
-                { _id: req.user._id },
-                { $pull: { cart: { productID: productID } } }
+                { _id: req.headers.userid },
+                { $pull: { cart: productID } }
             );
-            console.log(result);
-            res.send("item deleted");
+            res.send({message:"item deleted"});
 
         } catch (error) {
             res.send(error.message);

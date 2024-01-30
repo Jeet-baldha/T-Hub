@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom';
+import {useSelector} from 'react-redux'
 
 function ProductCard({
     name,
@@ -9,16 +10,36 @@ function ProductCard({
     backImage,
     price,
     className,
-    slug
+    slug,
+    id
 }) {
 
     const [hover, setHover] = useState(false);
-
+    const userID = useSelector( state => state.auth.userId);
 
     onmouseleave = () => {
         setTimeout(() => {
             setHover(false);
         },3000)
+    }
+
+    const addToacart = () => {
+        console.log(userID);
+        
+            fetch('http://localhost:3000/user/addToCart',{
+                method:'POST',
+                headers:{
+                    "content-type": "application/json",
+                    'userId': userID
+                },
+                body:JSON.stringify({
+                    productID:id
+                })
+            })
+            .then(response => response.json())
+            .then((data) => alert(data.message))
+            .catch(err => alert(err));
+
     }
 
 
@@ -35,7 +56,7 @@ function ProductCard({
                 <span className=' font-bold pr-2'>&#x20b9;{price}</span>
                 <span className='line-through text-gray-400'>&#x20b9;50</span>
                 </div>
-                <button className=' text-sm self-center mt-2 hover:bg-black hover:text-white hover:cursor-pointer border-2 px-2 py-1 sm:px-4 sm:py-2 border-black'>Add to cart</button>
+                <button className=' text-sm self-center mt-2 hover:bg-black hover:text-white hover:cursor-pointer border-2 px-2 py-1 sm:px-4 sm:py-2 border-black' onClick={addToacart}>Add to cart</button>
             </div>
         </div>
     )

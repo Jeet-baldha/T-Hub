@@ -4,13 +4,16 @@ import { MdDeleteForever } from "react-icons/md";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { NavLink } from 'react-router-dom';
 import axios from 'axios'
-import data from '../assets/Data/t-shirt';
+import {  useSelector } from 'react-redux';
 
 
 function CartProduct({
-    productId
+    productId,
+    deleteItem
+
 }) {
-    const [product,serProduct] = useState({});
+    const [product,setProduct] = useState({});
+    const userId = useSelector(state => state.auth.userId);
     useEffect(() => {
 
         async function  fetchData () {
@@ -20,7 +23,7 @@ function CartProduct({
                         "id": productId
                     }
             })
-            serProduct(data.data);
+            setProduct(data.data);
         }
 
         fetchData();
@@ -31,20 +34,9 @@ function CartProduct({
     },[])
 
 
-    const deleteItem = () => {
-
-        fetch('http://localhost:3000/user/cart/deleteItem',{
-            method: 'post',
-            headers:{
-                contentType: 'application/json'
-            },
-            body:  JSON.stringify({productId: productId})
-        })
-        .then((response) => alert(response));
-    }
-
+   
     return (
-        <div className=' bg-zinc-50 p-5 w-full flex sm:gap-20 gap-10'>
+        <div className=' bg-zinc-100 rounded-sm p-5 w-full flex sm:gap-20 gap-10'>
             <div className=' w-20 lg:w-32'>
                 <img src={product.frontImage}></img>
             </div>
@@ -60,7 +52,7 @@ function CartProduct({
                 <span>Reviews ({product.reviews ? product.reviews.length : 0})</span>
                 <p className='py-1'>Available: <span className=' text-emerald-500'>In stock</span></p>
                 <div className=' flex gap-5 font-medium'>
-                    <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white' onClick={deleteItem} value={productId} ><MdDeleteForever className=' inline-block mr-1' /> Delete</button>
+                    <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white' onClick={() => {deleteItem(productId)}} value={productId} ><MdDeleteForever className=' inline-block mr-1' /> Delete</button>
                     <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white'><IoBagCheckOutline className=' inline-block mr-1' /> Buy</button>
                 </div>
             </div>
