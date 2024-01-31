@@ -24,33 +24,33 @@ function Login(
     const handleLogin = (e) => {
         e.preventDefault();
 
-        fetch('http://localhost:3000/user/login',{
-            method : 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-
-            body: JSON.stringify(input)
-        })
-        .then((response) => response.json())
-        .then(data => {
-            console.log('Success', data);
-            console.log(data.authenticated)
-            if(data.authenticated){
-                const userId = data.userId;
-                dispatch(authLogin({userId})); 
-                navigate('/')
-            }
-            else{
-                navigate('/login');
-                alert(data.message);
-
-            }
-
-        })
-        .catch(error => {
-            console.log('Error', error);
-        })
+        try {
+            fetch('http://localhost:3000/user/login',{
+                method : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+    
+                body: JSON.stringify(input)
+            })
+            .then((response) => response.json())
+            .then(data => {
+                if(data.authenticated){
+                    const userId = data.userId;
+                    dispatch(authLogin({userId})); 
+                    navigate('/')
+                }
+                else{
+                    navigate('/login');
+                    alert(data.message);
+    
+                }
+    
+            })
+        } catch (error) {
+            alert(error.message);
+        }
+        
     }
 
     return (

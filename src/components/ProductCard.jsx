@@ -24,21 +24,26 @@ function ProductCard({
     }
 
     const addToacart = () => {
-        console.log(userID);
         
-            fetch('http://localhost:3000/user/addToCart',{
-                method:'POST',
-                headers:{
-                    "content-type": "application/json",
-                    'userId': userID
-                },
-                body:JSON.stringify({
-                    productID:id
+            if(userID){
+
+                fetch('http://localhost:3000/user/addToCart',{
+                    method:'POST',
+                    headers:{
+                        "content-type": "application/json",
+                        'userId': userID
+                    },
+                    body:JSON.stringify({
+                        productID:id
+                    })
                 })
-            })
-            .then(response => response.json())
-            .then((data) => alert(data.message))
-            .catch(err => alert(err));
+                .then(response => response.json())
+                .then((data) => alert(data.message))
+                .catch(err => alert(err));
+            }
+            else{
+                alert('Please login first');
+            }
 
     }
 
@@ -48,7 +53,7 @@ function ProductCard({
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}>
             <div className=' relativeh h-52 md:w-52 sm:w-36 w-32  sm:h-72 md:h-96 overflow-hidden'>
-                <NavLink to={`/product/${slug}`}><img className='product-image md:w-52 sm:w-36 w-32' src={hover ? backImage : frontImage}></img></NavLink>
+                <NavLink to={`/product/${slug}`}><img className='product-image md:w-52 sm:w-32 w-32' src={hover ? backImage : frontImage}></img></NavLink>
             </div>
             <div className=' flex flex-col text-center mt-2 relative bottom-0' >
                 <span className=' text-sm md:text-lg'>{name}</span>

@@ -1,10 +1,91 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { TbMessageCircle2 } from "react-icons/tb";
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 function Checkout() {
 
-    const state = ['Gujarat','Goa','Maharastra','Tamilnadu','Odisha'];
+    const state = ['Gujarat', 'Goa', 'Maharastra', 'Tamilnadu', 'Odisha'];
+    const [billingDetails, setBillingDetails] = useState({
+        state: '',
+        firstName: '',
+        lastName: '',
+        address: '',
+        city: '',
+        email: '',
+        phone: '',
+    });
+
+    const [cartData, setCartData] = useState([]);
+    const [paymentMethods, setPaymentMethods] = useState("");
+    const userID = useSelector(state => state.auth.userId);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await axios.get('http://localhost:3000/user/cart', {
+                    headers: {
+                        "Content-Type": 'application/json',
+                        "userID": userID
+                    }
+                })
+                setCartData(data.data);
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
+
+        fetchData();
+    }, [])
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setBillingDetails((prevDetails) => ({
+            ...prevDetails,
+            [name]: value,
+        }));
+    };
+
+    const handelPaymentMethod = (e) => {
+        setPaymentMethods(e.target.value);
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+
+        const postData = {
+            customer: billingDetails,
+            items: cartData,
+            totalAmount: calculateTotalPrice(),
+            paymentMethod: paymentMethods
+        }
+
+        console.log(postData);
+        fetch("http://localhost:3000/user/order", {
+            method: 'POST',
+            headers: {
+                "userid": userID,
+                "content-type": "application/json"
+            },
+
+
+
+            body: JSON.stringify(postData)
+        })
+        .then(response => response.json())
+        .then((data) => {
+            alert(data.message)
+        })
+        .catch(err => alert(err));
+    }
+
+    const calculateTotalPrice = () => {
+        return cartData.reduce((total, item) => total + item.price, 0);
+    };
 
     return (
         <div className='xl:mx-28 bg-white sm:p-10 pt-0 overflow-hidden'>
@@ -13,11 +94,11 @@ function Checkout() {
             </div>
             <div className=' p-5 mt-10 sm:p-10 flex flex-col md:flex-row w-full gap-7'>
 
-                <form className='flex w-full flex-col md:flex-row md:gap-10'>
+                <form className='flex w-full flex-col md:flex-row md:gap-10' onSubmit={handleSubmit}>
                     <div className='w-full'>
                         <div className=' bg-zinc-100 py-5 px-10 w-full rounded-sm flex items-center'>
                             <TbMessageCircle2 className=' inline-block text-xl mr-3 text-zinc-500'></TbMessageCircle2>
-                            <span className=' text-zinc-500 font-normal'>Resturning customer ? <NavLink to={'/login'}  className='text-black hover:cursor-pointer hover:text-zinc-300'>Click here to login </NavLink></span>
+                            <span className=' text-zinc-500 font-normal'>Resturning customer ? <NavLink to={'/login'} className='text-black hover:cursor-pointer hover:text-zinc-300'>Click here to login </NavLink></span>
                         </div>
 
                         <div className='py-10'>
@@ -25,33 +106,33 @@ function Checkout() {
                             <div className='py-10 flex flex-col gap-5'>
                                 <div>
                                     <label className='text-zinc-500'>State <span className=' text-red-500'>*</span></label>
-                                    <select name='state' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'>
-                                        {state.map((option) => (<option key={option}>{option}</option>))}
+                                    <select name='state' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'>
+                                        {state.map((option) => (<option key={option} value={option}>{option}</option>))}
                                     </select>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>First name <span className=' text-red-500'>*</span></label>
-                                    <input name='firstName' type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='First name'></input>
+                                    <input name='firstName' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='First name'></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Last name <span className=' text-red-500'>*</span></label>
-                                    <input name='lastName' type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Last name'></input>
+                                    <input name='lastName' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Last name'></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Address <span className=' text-red-500'>*</span></label>
-                                    <input name='addrress' type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Address'></input>
+                                    <input name='address' onChange={handleInputChange} type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Address'></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Town / city <span className=' text-red-500'>*</span></label>
-                                    <input name='addrress' type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Address'></input>
+                                    <input name='city' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Address'></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Email <span className=' text-red-500'>*</span></label>
-                                    <input name='email' type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Email'></input>
+                                    <input name='email' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Email'></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Phone <span className=' text-red-500'>*</span></label>
-                                    <input name='phone' type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Phone'></input>
+                                    <input name='phone' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Phone'></input>
                                 </div>
                             </div>
                         </div>
@@ -71,29 +152,29 @@ function Checkout() {
                                     <hr></hr>
 
                                     <div>
-                                        <p className='py-3'><a className=' hover:text-zinc-400 hover:cursor-pointer'><span>Graphic Print V-Neck</span></a> <span className=' float-right'>&#x20b9; 29.99</span></p>
-                                        <p className='py-3'><a className=' hover:text-zinc-400 hover:cursor-pointer'><span>Graphic Print V-Neck</span></a> <span className=' float-right'>&#x20b9; 29.99</span></p>
-                                        <p className='py-5 text-xl'><span>Cart Subtotal</span> <span className=' float-right'>&#x20b9; 59.98</span></p>
+                                        {cartData.map(item => <p className='py-3' key={item.productID}><a className=' hover:text-zinc-400 hover:cursor-pointer'><span>{item.name}</span></a> <span className=' float-right'>&#x20b9; {item.price}</span></p>)}
+
+                                        <p className='py-5 text-xl'><span>Cart Subtotal</span> <span className=' float-right'>&#x20b9; {calculateTotalPrice()}</span></p>
                                         <hr />
-                                        <p className='py-5 text-xl'><span>Order Totals</span> <span className=' float-right'>&#x20b9; 65.98</span></p>
+                                        <p className='py-5 text-xl'><span>Order Totals</span> <span className=' float-right'>&#x20b9; {calculateTotalPrice()}</span></p>
                                         <hr></hr>
 
                                         <div className='pt-5 flex flex-col gap-5'>
 
                                             <div>
-                                                <input name='paymentType' type='radio' className=' bg-black'></input>
+                                                <input name='paymentType' onChange={handelPaymentMethod} value="Direct bank transfer" type='radio' className=' bg-black'></input>
                                                 <label className='pl-5'>Direct bank transfer</label>
                                             </div>
                                             <div>
-                                                <input name='paymentType' type='radio' className=' bg-black'></input>
+                                                <input name='paymentType' onChange={handelPaymentMethod} value="Credit card" type='radio' className=' bg-black'></input>
                                                 <label className='pl-5'>Credit card</label>
                                             </div>
                                             <div>
-                                                <input name='paymentType' type='radio' className=' bg-black'></input>
+                                                <input name='paymentType' onChange={handelPaymentMethod} value="UPI" type='radio' className=' bg-black'></input>
                                                 <label className='pl-5'>UPI</label>
                                             </div>
                                             <div>
-                                                <input name='paymentType' type='radio' className=' bg-black'></input>
+                                                <input name='paymentType' onChange={handelPaymentMethod} value="Cash on delivery" type='radio' className=' bg-black'></input>
                                                 <label className='pl-5'>Cash on delivery</label>
                                             </div>
 

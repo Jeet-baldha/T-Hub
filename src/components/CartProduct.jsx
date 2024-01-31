@@ -4,16 +4,14 @@ import { MdDeleteForever } from "react-icons/md";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { NavLink } from 'react-router-dom';
 import axios from 'axios'
-import {  useSelector } from 'react-redux';
+
 
 
 function CartProduct({
     productId,
-    deleteItem
-
+    deleteItem,
 }) {
     const [product,setProduct] = useState({});
-    const userId = useSelector(state => state.auth.userId);
     useEffect(() => {
 
         async function  fetchData () {
@@ -24,13 +22,9 @@ function CartProduct({
                     }
             })
             setProduct(data.data);
+
         }
-
         fetchData();
-
-        
-        
-
     },[])
 
 

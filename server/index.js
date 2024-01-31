@@ -93,9 +93,9 @@ const register = (req, res) => {
             // Correct the structure of passport.authenticate
             passport.authenticate('local')(req, res, () => {
                 res.send({
-                message: 'User register successful',
-                authenticated: true,
-                userId:newUser._id,
+                    message: 'User register successful',
+                    authenticated: true,
+                    userId: newUser._id,
                 });
             });
         }
@@ -117,10 +117,10 @@ app.post('/user/login', (req, res, next) => {
             if (loginErr) {
                 return next(loginErr);
             }
-            return res.status(200).json({ 
+            return res.status(200).json({
                 message: 'User login successful',
                 authenticated: true,
-                userId:user._id,
+                userId: user._id,
             });
         });
     })(req, res, next);
@@ -136,10 +136,11 @@ app.get('/user/logout', (req, res, next) => {
     })
 })
 
-app.get('/user', (req, res) => {
+app.get('/user', async (req, res) => {
 
-    if (req.isAuthenticated()) {
-        res.send(req.user);
+    if (req.headers.userid) {
+        const user = await User.findById(req.headers.userid);
+        res.send(user);
     }
     else {
         res.send("user not found");
@@ -161,33 +162,51 @@ app.get('/user/order', async (req, res) => {
 
 app.post('/user/order', async (req, res) => {
 
-    if (req.isAuthenticated()) {
+    const userId = req.headers.userid;
+    if (userId) {
 
-        const productID = req.body.productID;
 
-        if (productID === undefined) {
-            res.send("product not found");
-        }
 
         const order = {
-            orderID: new Date().getTime() + req.user._id,
-            orderStatus: "pending",
-            productID: productID,
-            price: 124,
-            address: "",
-            trackId: "",
-            paymentType: "UPI",
-            orderDate: new Date().toLocaleDateString()
+            orderID: new Date().getTime() + userId,      // A unique identifier for the order
+            customer: {
+                firstName: String,                              // First name of the customer
+                lastName: String,                               // Last name of the customer
+                email: String, 
+                phone: Number,
+                state:String,
+                city:String,
+                address:String                                  // Email address of the customer
+            },
+            items: [
+                {
+                    productId: 2,                               // MongoDB-generated unique identifier for the product
+                    productName: String,                        // Name of the product               
+                    price: Number,                              // Price of the product
+                },
+            ],
+            totalAmount:Number,
+            orderDate: new Date().toLocaleDateString(),         // Date and time when the order was placed
+            paymentMethod:String,                               // Order status (e.g., "pending", "shipped", "delivered")
+            status: String
         }
 
-        const userID = req.user._id;
+        order.customer = req.body.customer;
+        order.items = req.body.items;
+        order.totalAmount = req.body.totalAmount;
+        order.paymentMethod = req.body.paymentMethod;
+        order.status = "pending";
+
+        console.log(order);
+
+
 
         const result = await User.updateOne(
-            { _id: userID },
+            { _id: userId },
             { $push: { orders: order } }
         )
 
-        res.send(order);
+        res.send({message: 'Order updated successfully'});
     }
     else {
         res.send("please login");
@@ -232,37 +251,38 @@ app.post('/user/addToCart', async (req, res) => {
         const userID = req.headers.userid;
 
         const user = await User.findById(userID);
+        const product = data.tshirts.find((tshirts) => tshirts.id === productID);
 
-        const product = {
-            productID: productID
+        const item = {
+            productID: product.id,
+            name: product.name,
+            price: product.price
         }
 
-        if (user.cart.includes(productID)) {
-            res.send({message:"You already have this product in your cart"});
+        if (user.cart.find((item) => item.productID === productID)) {
+            res.send({ message: "You already have this product in your cart" });
         }
         else {
             const result = await User.updateOne(
                 { _id: userID },
-                { $push: { cart: productID } }
+                { $push: { cart: item } }
             )
-            res.send({message:"added to cart"});
+            res.send({ message: "added to cart" });
         }
 
     }
     else {
-        res.send({message:"please login first"});
+        res.send({ message: "please login first" });
     }
 })
 
 app.get('/user/cart', async (req, res) => {
-
-    // console.log(req.headers);
     if (req.headers.userid) {
         const user = await User.findById(req.headers.userid);
         res.send(user.cart);
     }
     else {
-        res.send({message:"You must be logged in"});
+        res.send({ message: "You must be logged in" });
     }
 
 })
@@ -270,18 +290,18 @@ app.get('/user/cart', async (req, res) => {
 app.post('/user/cart/deleteItem', async (req, res) => {
 
     const productID = req.body.productID;
-        try {
-            const result = await User.updateMany(
-                { _id: req.headers.userid },
-                { $pull: { cart: productID } }
-            );
-            res.send({message:"item deleted"});
+    try {
+        const result = await User.updateMany(
+            { _id: req.headers.userid },
+            { $pull: { cart: { productID: productID } } }
+        );
+        res.send({ message: "item deleted" });
 
-        } catch (error) {
-            res.send(error.message);
-        }
+    } catch (error) {
+        res.send(error.message);
+    }
 
-        
+
 
 
 })

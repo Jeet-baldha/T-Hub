@@ -1,7 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useId, useState } from 'react'
-import StarRating from '../components/StarRating'
-import { NavLink } from 'react-router-dom'
+import { NavLink,useNavigate } from 'react-router-dom'
 import CartProduct from '../components/CartProduct'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
@@ -9,26 +8,27 @@ function Cart() {
 
     const [cartData, setCartData] = useState([]);
     const userID = useSelector(state => state.auth.userId);
+    const navigate = useNavigate();
 
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await axios.get('http://localhost:3000/user/cart', {
-                    headers: {
-                        "Content-Type": 'application/json',
-                        "userID": userID
-                    }
-                })
-                setCartData(data.data);
-            } catch (error) {
-                console.log(error);
-            }
-
+    const fetchData = async () => {
+        try {
+            const data = await axios.get('http://localhost:3000/user/cart', {
+                headers: {
+                    "Content-Type": 'application/json',
+                    "userID": userID
+                }
+            })
+            setCartData(data.data);
+        } catch (error) {
+            console.log(error);
         }
 
+    }
+
+    useEffect(() => {
+        
         fetchData();
-    }, [cartData,userID])
+    }, [])
 
     const deleteItem = (productId) => {
 
@@ -44,11 +44,17 @@ function Cart() {
             })
             .then(response => response.json())
             .then((data) => {
-                setCartData((data) => data.filter(item => item.id !== productId))
+                fetchData();
                 alert(data.message)}
             )
             .catch(err => alert(err));
     }
+
+    const calculateTotalPrice = () => {
+        return cartData.length > 0 &&  cartData.reduce((total, item) => total + item.price, 0);
+    };
+    
+
 
 
     return (
@@ -60,26 +66,26 @@ function Cart() {
             <div className='mt-10 p-5 sm:mt-20 lg:p-10 '>
                 <div className=' flex w-full justify-between gap-5 sm:flex-row flex-col'>
                     <div className=' flex justify-center flex-wrap gap-y-5 w-full '>
-                       {cartData.length > 0 ?  cartData.map((product) => <CartProduct key={product} deleteItem={deleteItem} productId={product} />) : <h1 className=' font-bold text-xl'>Please add item in  cart</h1>}
+                        {cartData.length > 0 ?  cartData.map((product) => <CartProduct key={product.productID}  deleteItem={deleteItem} productId={product.productID} />) : <h1 className=' font-bold text-xl'>Please add item in  cart</h1>}
                     </div>
                     <div className=' w-full sm:w-96 bg-zinc-100 h-full p-5 rounded-sm'>
                         <h1 className='text-base font-medium text-zinc-500 pb-2'> PRICE DETAILS</h1>
                         <hr></hr>
                         <div className='py-5 text-black'>
-                            <p>Price ({cartData.length} items) <span className=' float-right'>&#x20b9; 98.97</span> </p>
-                            <p>Discount <span className=' float-right text-green-500'>- &#x20b9; 30</span> </p>
+                            <p>Price ({cartData.length} items) <span className=' float-right'>&#x20b9; {calculateTotalPrice()}</span> </p>
+                            <p>Discount <span className=' float-right text-green-500'>- &#x20b9; 0</span> </p>
                             <div>Delivery charge <p className=' float-right'> <span className='line-through'>&#x20b9;10 </span> <span className='text-green-500'> free</span></p> </div>
                         </div>
                         <hr></hr>
                         <div className=' md:text-xl py-5 font-medium'>
                             <h1 className=' inline-block'>Total amount</h1>
-                            <h1 className=' inline-block float-right'>&#x20b9; 60 </h1>
+                            <h1 className=' inline-block float-right'>&#x20b9; {calculateTotalPrice()}  </h1>
                         </div>
                         <hr></hr>
                         <p className=' pt-3 text-green-500 font-medium'> You will save &#x20b9; 40 on this order</p>
                     </div>
                 </div>
-                <button className='mb-5 w-full overflow-hidden mt-20 p-4 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer'><NavLink to={'/checkout'}  >Checkout</NavLink></button>
+                <button className='mb-5 w-full overflow-hidden mt-20 p-4 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer' onClick={() => cartData.length > 1 ? navigate('/checkout') : alert("please add item into cart")} > <NavLink>Checkout</NavLink></button>
             </div>
 
         </div>
