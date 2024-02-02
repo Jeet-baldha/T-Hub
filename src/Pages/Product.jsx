@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useState,useEffect } from 'react'
 import StarRating from '../components/StarRating'
-import data from '../assets/Data/t-shirt'
 import ProductCard from '../components/ProductCard'
 import { NavLink, useParams } from 'react-router-dom';
+import data from '../assets/Data/t-shirt';
 import axios from 'axios';
 
 function Product() {
@@ -11,12 +11,12 @@ function Product() {
     const [product,setProduct] = useState({});
     const [activeImgUrl, setActiveImgUrl] = useState("");
     const [activeLink, setActiveLink] = useState("pd");
-    const {id} = useParams()
+    const {slug} = useParams()
     useEffect(() => {
         const fetchData = async () => {
             
             try {
-                const dataP = await axios.get(`http://localhost:3000/product/${id}`)
+                const dataP = await axios.get(`http://localhost:3000/product/${slug}`)
                 setProduct(dataP.data);
                 
             } catch (error) {
@@ -26,11 +26,11 @@ function Product() {
         }
         fetchData();   
         
-    },[id,product])
+    },[slug])
 
     useEffect(() => {
             setActiveImgUrl(product.frontImage);
-    },[id,product.frontImage])
+    },[slug,product.frontImage])
 
     const sizes = ['S', 'M', 'L', 'XL'];
     const colors = ['red', 'green', 'blue', 'yellow'];

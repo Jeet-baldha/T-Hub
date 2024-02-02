@@ -11,6 +11,7 @@ import Category from './Pages/Category.jsx'
 import Cart from './Pages/Cart.jsx'
 import store from './store/store.js'
 import {Provider} from 'react-redux'
+import Profile from './Pages/Profile.jsx'
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: '/product/:id',
+        path: '/product/:slug',
         element: <Product />
       },
       {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: '/category/:category',
         element: <Category />
+      },
+      {
+        path: '/user/:username',
+        element: <Profile />
       },
     ]
   }

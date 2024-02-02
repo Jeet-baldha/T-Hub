@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import express from 'express';
 import bodyParser from 'body-parser';
 import data from '../src/assets/Data/t-shirt.js'
@@ -267,7 +268,7 @@ app.post('/user/addToCart', async (req, res) => {
                 { _id: userID },
                 { $push: { cart: item } }
             )
-            res.send({ message: "added to cart" });
+            res.status(200).send({ message: "added to cart" });
         }
 
     }

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react'
 import { IoArrowForward } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';

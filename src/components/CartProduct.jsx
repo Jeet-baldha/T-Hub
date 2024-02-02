@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import StarRating from './StarRating'
 import { MdDeleteForever } from "react-icons/md";
@@ -28,7 +30,6 @@ function CartProduct({
     },[])
 
 
-   
     return (
         <div className=' bg-zinc-100 rounded-sm p-5 w-full flex sm:gap-20 gap-10'>
             <div className=' w-20 lg:w-32'>

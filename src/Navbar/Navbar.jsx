@@ -56,7 +56,7 @@ function Navbar() {
                             {user ? (
                                 <>
                                     {/* User information and logout */}
-                                    <li className='px-16 py-2 hover:cursor-pointer hover:bg-zinc-200 z-50 bg-white list-none'><a>{user.username}</a></li>
+                                    <li className='px-16 py-2 hover:cursor-pointer hover:bg-zinc-200 z-50 bg-white list-none'><NavLink to={`/user/${user.username}`}>{user.username}</NavLink></li>
                                     <hr></hr>
                                     <li className='px-16 py-2 hover:cursor-pointer hover:bg-zinc-200 duration-100 z-50 bg-white list-none' onClick={handleLogout}><a>Logout</a></li>
                                 </>
