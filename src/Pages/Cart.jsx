@@ -85,7 +85,7 @@ function Cart() {
                         <p className=' pt-3 text-green-500 font-medium'> You will save &#x20b9; 40 on this order</p>
                     </div>
                 </div>
-                <button className='mb-5 w-full overflow-hidden mt-20 p-4 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer' onClick={() => cartData.length > 1 ? navigate('/checkout') : alert("please add item into cart")} > <NavLink>Checkout</NavLink></button>
+                <button className='mb-5 w-full overflow-hidden mt-20 p-4 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer' onClick={() => cartData.length > 0 ? navigate('/checkout') : alert("please add item into cart")} > <NavLink>Checkout</NavLink></button>
             </div>
 
         </div>

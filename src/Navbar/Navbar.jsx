@@ -52,7 +52,7 @@ function Navbar() {
                         <NavLink to={'/cart'}><IoIosCart className=' text-zinc-300 text-xl hover:text-white hover:cursor-pointer' /></NavLink>
                         <NavLink onMouseEnter={() => setBoxDisplay("block")} onMouseLeave={() => setBoxDisplay("hidden")} > <IoPerson className=' text-zinc-300 text-xl hover:text-white hover:cursor-pointer' /></NavLink>
 
-                        <div className={`absolute top-10 rounded-sm  xl:right-32 shadow-lg z-50 bg- font-semibold text-center ${boxDisplay}`} onMouseEnter={() => setBoxDisplay("block")} onMouseLeave={() => setBoxDisplay("hidden")}>
+                        <div className={`absolute top-10 rounded-sm  xl:right-32 shadow-lg z-50 bg- font-semibold text-center ${boxDisplay}`} onMouseEnter={() => setTimeout(()=>  {setBoxDisplay("block")},3000)} onMouseLeave={() => setBoxDisplay("hidden")}>
                             {user ? (
                                 <>
                                     {/* User information and logout */}
