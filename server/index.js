@@ -88,8 +88,7 @@ const register = (req, res) => {
 
     User.register({ username: username, phone: phone }, password, (err, newUser) => {
         if (err) {
-            console.log(err);
-            res.send('User registration failed');
+            res.send({message:err.message});
         } else {
             // Correct the structure of passport.authenticate
             passport.authenticate('local')(req, res, () => {
@@ -206,6 +205,8 @@ app.post('/user/order', async (req, res) => {
             { _id: userId },
             { $push: { orders: order } }
         )
+
+        const resCart = await User.deleteOne({ _id: userId});
 
         res.send({message: 'Order updated successfully'});
     }
