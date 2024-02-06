@@ -9,8 +9,8 @@ import { Strategy as LocalStrategy } from "passport-local";
 import passport from 'passport';
 import flash from 'connect-flash'
 import passportLocalMongoose from 'passport-local-mongoose'
-
-
+import { instance } from './paymrntInstance.js'
+import crypto from 'crypto'
 
 
 
@@ -88,7 +88,7 @@ const register = (req, res) => {
 
     User.register({ username: username, phone: phone }, password, (err, newUser) => {
         if (err) {
-            res.send({message:err.message});
+            res.send({ message: err.message });
         } else {
             // Correct the structure of passport.authenticate
             passport.authenticate('local')(req, res, () => {
@@ -172,11 +172,11 @@ app.post('/user/order', async (req, res) => {
             customer: {
                 firstName: String,                              // First name of the customer
                 lastName: String,                               // Last name of the customer
-                email: String, 
+                email: String,
                 phone: Number,
-                state:String,
-                city:String,
-                address:String                                  // Email address of the customer
+                state: String,
+                city: String,
+                address: String                                  // Email address of the customer
             },
             items: [
                 {
@@ -185,9 +185,9 @@ app.post('/user/order', async (req, res) => {
                     price: Number,                              // Price of the product
                 },
             ],
-            totalAmount:Number,
+            totalAmount: Number,
             orderDate: new Date().toLocaleDateString(),         // Date and time when the order was placed
-            paymentMethod:String,                               // Order status (e.g., "pending", "shipped", "delivered")
+            paymentMethod: String,                               // Order status (e.g., "pending", "shipped", "delivered")
             status: String
         }
 
@@ -197,8 +197,6 @@ app.post('/user/order', async (req, res) => {
         order.paymentMethod = req.body.paymentMethod;
         order.status = "pending";
 
-        console.log(order);
-
 
 
         const result = await User.updateOne(
@@ -206,9 +204,8 @@ app.post('/user/order', async (req, res) => {
             { $push: { orders: order } }
         )
 
-        const resCart = await User.deleteOne({ _id: userId});
 
-        res.send({message: 'Order updated successfully'});
+        res.send({ message: 'Order updated successfully' });
     }
     else {
         res.send("please login");
@@ -217,13 +214,45 @@ app.post('/user/order', async (req, res) => {
 
 })
 
+app.post('/checkout', async (req, res) => {
+
+
+
+    const option = {
+        amount: Number(req.body.totalAmount * 100),
+        currency: "INR",
+    }
+    const response = await instance.orders.create(option)
+
+
+    res.status(200).send(response);
+})
+
 app.get('/', (req, res) => {
     res.send('welcome');
 })
 
-app.get('/product/toprated', (req, res) => {
-    const products = data.tshirts.filter((tshirts) => tshirts.rating >= 4);
-    res.send(products)
+app.post('/paymentVerfication', (req, res) => {
+    
+    const { razorpay_order_id,razorpay_payment_id,razorpay_signature} = req.body;
+
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expextedSignature = crypto.createHmac("sha256","BILWOmcmWucxG6Y03AmR14Ls")
+                                    .update(body.toString())
+                                    .digest('hex')
+
+    if(razorpay_signature === expextedSignature){
+        res.send({sucess:true})
+    }
+    else{
+        res.send({sucess:false})
+
+    }
+
+
+
+
 })
 
 app.get('/:category/products', (req, res) => {
@@ -231,6 +260,12 @@ app.get('/:category/products', (req, res) => {
     category = category.charAt(0).toUpperCase() + category.slice(1);
     const products = data.tshirts.filter((tshirts) => tshirts.category === category);
     res.send(products)
+})
+
+app.get('/product/toprated',  (req, res) => {
+    const product = data.tshirts.filter((tshirts) => tshirts.rating > 4);
+
+    res.send(product);
 })
 
 
@@ -302,8 +337,6 @@ app.post('/user/cart/deleteItem', async (req, res) => {
     } catch (error) {
         res.send(error.message);
     }
-
-
 
 
 })

@@ -4,6 +4,7 @@ import { TbMessageCircle2 } from "react-icons/tb";
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+
 function Checkout() {
 
     const state = ['Gujarat', 'Goa', 'Maharastra', 'Tamilnadu', 'Odisha'];
@@ -53,9 +54,8 @@ function Checkout() {
         setPaymentMethods(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
 
         const postData = {
             customer: billingDetails,
@@ -65,24 +65,45 @@ function Checkout() {
         }
 
         console.log(postData);
-        fetch("http://localhost:3000/user/order", {
-            method: 'POST',
-            headers: {
-                "userid": userID,
-                "content-type": "application/json"
+        try {
+            const response = await axios.post("http://localhost:3000/checkout",postData,{
+                headers: {
+                    'userid': userID,
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const options = {
+            key: "rzp_test_TZR7gvoGog8ry7", 
+            amount: response.data.amount, 
+            name: "T-hub",
+            description: "Test Transaction",
+            image: "https://avatars.githubusercontent.com/u/106021946?v=4",
+            order_id: response.data.id,
+            callback_url: "http://localhost:3000/paymentVerfication",
+            prefill: {
+                name: "Gaurav Kumar",
+                email: "gaurav.kumar@example.com",
+                contact: "9000090000"
             },
+            notes: {
+                address: "Razorpay Corporate Office"
+            },
+            theme: {
+                color: "#3399cc"
+            }
+        };
 
-
-
-            body: JSON.stringify(postData)
-        })
-        .then(response => response.json())
-        .then((data) => {
-            alert(data.message)
-        })
-        .catch(err => alert(err));
+        var rzp = new window.Razorpay(options);
+            rzp.open();
+            e.preventDefault();
+    } catch (error) {
+        alert(error);
     }
+    }
+    
 
+    
     const calculateTotalPrice = () => {
         return cartData.reduce((total, item) => total + item.price, 0);
     };
@@ -112,27 +133,27 @@ function Checkout() {
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>First name <span className=' text-red-500'>*</span></label>
-                                    <input name='firstName' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='First name'></input>
+                                    <input name='firstName' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='First name' required></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Last name <span className=' text-red-500'>*</span></label>
-                                    <input name='lastName' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Last name'></input>
+                                    <input name='lastName' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Last name' required ></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Address <span className=' text-red-500'>*</span></label>
-                                    <input name='address' onChange={handleInputChange} type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Address'></input>
+                                    <input name='address' onChange={handleInputChange} type='text' className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Address' required ></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Town / city <span className=' text-red-500'>*</span></label>
-                                    <input name='city' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Address'></input>
+                                    <input name='city' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Address' required ></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Email <span className=' text-red-500'>*</span></label>
-                                    <input name='email' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Email'></input>
+                                    <input name='email' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Email' required ></input>
                                 </div>
                                 <div>
                                     <label className='text-zinc-500'>Phone <span className=' text-red-500'>*</span></label>
-                                    <input name='phone' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Phone'></input>
+                                    <input name='phone' type='text' onChange={handleInputChange} className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm' placeholder='Phone' required  ></input>
                                 </div>
                             </div>
                         </div>
@@ -182,11 +203,12 @@ function Checkout() {
                                     </div>
                                 </div>
                             </div>
-
-                            <input type='submit' value={'Checkout'} className='w-full p-4 mt-1 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer'></input>
+                            <script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_NWwRapmq6mf5Nk" async> </script>
+                                <input type='submit' value={'Checkout'} className='w-full p-4 mt-1 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer'></input>
                         </div>
                     </div>
                 </form>
+            
             </div>
         </div>
     )

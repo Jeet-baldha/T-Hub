@@ -24,7 +24,7 @@ const data = {
     {
         "id": 2,
         "name": "Graphic Print V-Neck",
-        "price": 24.99,
+        "price": 1,
         "stock": 0,
         "category": "Women",
         "frontImage": "../static/T-shirts/Graphic-Print-V-Neck-front-side.jpg",

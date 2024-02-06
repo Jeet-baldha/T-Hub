@@ -45,7 +45,7 @@ function CartProduct({
                 </div>
                 <StarRating rating={product.rating} />
                 <span>Reviews ({product.reviews ? product.reviews.length : 0})</span>
-                <p className='py-1'>Available: <span className=' text-emerald-500'>In stock</span></p>
+                <p className='py-2'>Available: {product.stock > 1 ?<span className=' text-emerald-500'>In stock</span> : <span className=' text-red-500'>out of stock</span> }  </p>
                 <div className=' flex gap-5 font-medium'>
                     <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white' onClick={() => {deleteItem(productId)}} value={productId} ><MdDeleteForever className=' inline-block mr-1' /> Delete</button>
                     <button className='flex items-center border-2 border-black px-1 lg:px-3 py-1 hover:bg-black hover:text-white'><IoBagCheckOutline className=' inline-block mr-1' /> Buy</button>

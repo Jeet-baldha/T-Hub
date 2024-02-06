@@ -5,6 +5,7 @@ import ProductCard from '../components/ProductCard'
 import { NavLink, useParams } from 'react-router-dom';
 import data from '../assets/Data/t-shirt';
 import axios from 'axios';
+import CartBtn from '../components/CartBtn';
 
 function Product() {
 
@@ -102,15 +103,15 @@ function Product() {
                         </div>
 
                         <div>
-                            <p className=' text-zinc-400 sm:text-xl'>Categories: <span className=' text-zinc-600'> {product.category}</span> </p>
+                            <p className='text-zinc-400 sm:text-xl'>Categories: <span className=' text-zinc-600'> {product.category}</span> </p>
                         </div>
 
                         <div className='flex justify-around py-10'>
                             <div>
-                                <button className='hover:bg-black hover:text-white hover:cursor-pointer border-2 px-4 py-2 border-black'>Add to cart</button>
+                                <button className=' text-sm self-center mt-2 hover:bg-black hover:text-white hover:cursor-pointer border-2 px-2 py-1 sm:px-4 sm:py-2 border-black'>Buy now</button>
                             </div>
                             <div>
-                                <button className='hover:bg-black hover:text-white hover:cursor-pointer border-2 px-4 py-2 border-black'>Shop now</button>
+                                <CartBtn id={product.id}></CartBtn>
                             </div>
 
                         </div>

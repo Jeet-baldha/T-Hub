@@ -43,7 +43,7 @@ function Home() {
 
             <hr></hr>
 
-            <div className='mt-20 grid p-14 justify-center grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12  min-[500px]:grid-cols-3'>
+            <div className='mt-20 grid p-14 justify-center grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-12 gap-4  min-[500px]:grid-cols-3'>
                 {products.map((tshirts) => (<div key={tshirts.id}><ProductCard  {...tshirts} /></div>))}
             </div>
 
