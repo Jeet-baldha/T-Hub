@@ -1,6 +1,5 @@
-Certainly! Below is an extended version of your README file with the instructions on starting both the frontend and backend servers.
 
-```markdown
+
 # T-Hub - T-Shirt Selling Website
 
 Welcome to T-Hub - Your One-Stop Shop for Trendy T-Shirts!
@@ -10,7 +9,6 @@ Welcome to T-Hub - Your One-Stop Shop for Trendy T-Shirts!
 T-Hub is a web platform dedicated to providing a seamless and enjoyable shopping experience for T-shirt enthusiasts. Explore our extensive collection of high-quality T-shirts featuring unique designs, comfortable fabrics, and affordable prices.
 
 ## Features
-
 
 - **Browse and Shop:** Explore our extensive collection of T-shirts for men, women, and kids. Find the latest trends and classic styles to suit your preferences.
 
@@ -24,7 +22,6 @@ T-Hub is a web platform dedicated to providing a seamless and enjoyable shopping
 
 - **Responsive Design:** T-Hub is designed to provide an optimal viewing and shopping experience across various devices, including desktops, tablets, and smartphones.
 
-
 ## Getting Started
 
 ### Prerequisites
@@ -33,10 +30,10 @@ Make sure you have the following installed:
 
 - [Node.js](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)
-
+  
 ### Clone the repository
 
-```bash
+``` bash
 git clone https://github.com/jeet-baldha/t-hub.git
 cd t-hub
 ```
@@ -45,7 +42,6 @@ cd t-hub
 
 ```bash
 npm install
-
 ```
 
 ### Configure Razorpay
@@ -66,16 +62,6 @@ npm install
 
      Replace `your-razorpay-key` and `your-razorpay-secret` with your actual Razorpay API Key and Secret.
 
-
-### Configure environment variables
-
-Create a `.env` file in the root directory and set the necessary configuration values. Sample:
-
-```env
-RAZORPAY_KEYL=YOUR KEY
-RAZORPAY_SECRET=your-secret
-```
-
 ### Start Backend Server
 
 1. **Navigate to the server directory:**
@@ -92,12 +78,11 @@ RAZORPAY_SECRET=your-secret
 
 3. **Configure backend environment variables:**
 
-   Create a `.env` file in the `server` directory and set the necessary configuration values such as database connection strings, API keys, etc.
+   - Create a `.env` file in the `server` directory and set the necessary configuration values such as database connection strings, API keys, etc.
 
 4. **Start the backend server:**
 
    ```bash
-   cd server
    node index.js
    ```
 
@@ -151,7 +136,6 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## Contact
 
-For inquiries and support, please contact us at support@t-hub.com.
+For inquiries and support, please contact us at jeetbaldha26@gmail.com
 
 Happy shopping at T-Hub!
-```
