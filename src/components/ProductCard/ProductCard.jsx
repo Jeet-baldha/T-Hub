@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import CartBtn from './CartBtn';
+import CartBtn from '../Button/CartBtn';
 
 
 function ProductCard({

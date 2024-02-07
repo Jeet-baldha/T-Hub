@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import StarRating from './StarRating'
+import StarRating from '../Button/StarRating'
 import { MdDeleteForever } from "react-icons/md";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { NavLink } from 'react-router-dom';
@@ -12,21 +12,25 @@ import axios from 'axios'
 function CartProduct({
     productId,
     deleteItem,
+    slug
 }) {
     const [product,setProduct] = useState({});
     useEffect(() => {
 
-        async function  fetchData () {
-            const data = await axios.get('http://localhost:3000/product',{
-                    headers:{
-                        "Content-Type": "application/json",
-                        "id": productId
-                    }
-            })
-            setProduct(data.data);
-
-        }
-        fetchData();
+        const fetchData = async () => {
+            
+            try {
+                const dataP = await axios.get(`http://localhost:3000/product/${slug}`)
+                setProduct(dataP.data);
+                
+            } catch (error) {
+                console.log(error);
+            }
+            
+        };
+        
+        fetchData();   
+        
     },[])
 
 

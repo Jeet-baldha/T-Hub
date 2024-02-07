@@ -66,7 +66,7 @@ function Checkout() {
 
         console.log(postData);
         try {
-            const response = await axios.post("http://localhost:3000/checkout",postData,{
+            const response = await axios.post("http://localhost:3000/checkout", postData, {
                 headers: {
                     'userid': userID,
                     'Content-Type': 'application/json',
@@ -74,36 +74,36 @@ function Checkout() {
             });
 
             const options = {
-            key: "rzp_test_TZR7gvoGog8ry7", 
-            amount: response.data.amount, 
-            name: "T-hub",
-            description: "Test Transaction",
-            image: "https://avatars.githubusercontent.com/u/106021946?v=4",
-            order_id: response.data.id,
-            callback_url: "http://localhost:3000/paymentVerfication",
-            prefill: {
-                name: "Gaurav Kumar",
-                email: "gaurav.kumar@example.com",
-                contact: "9000090000"
-            },
-            notes: {
-                address: "Razorpay Corporate Office"
-            },
-            theme: {
-                color: "#3399cc"
-            }
-        };
+                key: "rzp_test_TZR7gvoGog8ry7",
+                amount: response.data.amount,
+                name: "T-hub",
+                description: "Test Transaction",
+                image: "https://avatars.githubusercontent.com/u/106021946?v=4",
+                order_id: response.data.id,
+                callback_url: "http://localhost:3000/paymentVerfication",
+                prefill: {
+                    name: postData.customer.firstName + " " + postData.customer.lastName,
+                    email: postData.customer.email,
+                    contact: postData.customer.phone
+                },
+                notes: {
+                    address: "Razorpay Corporate Office"
+                },
+                theme: {
+                    color: "#000000"
+                }
+            };
 
-        var rzp = new window.Razorpay(options);
+            var rzp = new window.Razorpay(options);
             rzp.open();
             e.preventDefault();
-    } catch (error) {
-        alert(error);
+        } catch (error) {
+            alert(error);
+        }
     }
-    }
-    
 
-    
+
+
     const calculateTotalPrice = () => {
         return cartData.reduce((total, item) => total + item.price, 0);
     };
@@ -204,11 +204,11 @@ function Checkout() {
                                 </div>
                             </div>
                             <script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_NWwRapmq6mf5Nk" async> </script>
-                                <input type='submit' value={'Checkout'} className='w-full p-4 mt-1 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer'></input>
+                            <input type='submit' value={'Checkout'} className='w-full p-4 mt-1 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer'></input>
                         </div>
                     </div>
                 </form>
-            
+
             </div>
         </div>
     )

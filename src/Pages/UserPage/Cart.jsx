@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useId, useState } from 'react'
-import { NavLink,useNavigate } from 'react-router-dom'
-import CartProduct from '../components/CartProduct'
+import { NavLink, useNavigate } from 'react-router-dom'
+import CartProduct from '../../components/ProductCard/CartProduct'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 function Cart() {
@@ -26,34 +26,35 @@ function Cart() {
     }
 
     useEffect(() => {
-        
+
         fetchData();
     }, [])
 
     const deleteItem = (productId) => {
 
-        fetch('http://localhost:3000/user/cart/deleteItem',{
-                method:'POST',
-                headers:{
-                    "content-type": "application/json" ,
-                    "userid":userID
-                },
-                body:JSON.stringify({
-                    productID:productId
-                })
+        fetch('http://localhost:3000/user/cart/deleteItem', {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json",
+                "userid": userID
+            },
+            body: JSON.stringify({
+                productID: productId
             })
+        })
             .then(response => response.json())
             .then((data) => {
                 fetchData();
-                alert(data.message)}
+                alert(data.message)
+            }
             )
             .catch(err => alert(err));
     }
 
     const calculateTotalPrice = () => {
-        return cartData.length > 0 &&  cartData.reduce((total, item) => total + item.price, 0);
+        return cartData.length > 0 && cartData.reduce((total, item) => total + item.price, 0);
     };
-    
+
 
 
 
@@ -66,7 +67,7 @@ function Cart() {
             <div className='mt-10 p-5 sm:mt-20 lg:p-10 '>
                 <div className=' flex w-full justify-between gap-5 sm:flex-row flex-col'>
                     <div className=' flex justify-center flex-wrap gap-y-5 w-full '>
-                        {cartData.length > 0 ?  cartData.map((product) => <CartProduct key={product.productID}  deleteItem={deleteItem} productId={product.productID} />) : <h1 className=' font-bold text-xl'>Please add item in  cart</h1>}
+                        {cartData.length > 0 ? cartData.map((product) => <CartProduct key={product.productID} deleteItem={deleteItem} productId={product.productID} slug={product.slug} />) : <h1 className=' font-bold text-xl'>Please add item in  cart</h1>}
                     </div>
                     <div className=' w-full sm:w-96 bg-zinc-100 h-full p-5 rounded-sm'>
                         <h1 className='text-base font-medium text-zinc-500 pb-2'> PRICE DETAILS</h1>

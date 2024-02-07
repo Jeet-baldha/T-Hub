@@ -1,22 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
-import { IoArrowForward } from "react-icons/io5";
 import { FaFacebook } from "react-icons/fa";
 import { FaGoogle } from 'react-icons/fa';
-import data from '../assets/Data/t-shirt';
-import {useNavigate} from 'react-router-dom'
-import Login from '../components/Login';
-import Register from '../components/Register';
+import Login from '../../components/Login';
+import Register from '../../components/Register';
 
 function LoginSignup() {
 
     const [activeBtn, setActiveBtn] = useState("Login");
-    const [inputData, setInputData] = useState({});
-    const navigate = useNavigate();
-
-   
-
-    
 
     return (
         <div className='xl:mx-28 bg-white sm:p-10 pt-0 overflow-hidden'>

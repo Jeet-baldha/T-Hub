@@ -1,16 +1,14 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
-import ProductCard from '../components/ProductCard'
-import data from '../assets/Data/t-shirt'
+import ProductCard from '../../components/ProductCard/ProductCard'
 import { IoLocation } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
 import { MdHeadsetMic } from "react-icons/md";
-import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
 function Home() {
 
-    const [products,setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,11 +18,11 @@ function Home() {
             } catch (error) {
                 console.log(error);
             }
-            
+
         }
-        fetchData();   
-        
-    },[])
+        fetchData();
+
+    }, [])
 
     return (
         <div className='xl:mx-28 bg-white sm:p-10 pt-0 overflow-hidden'>

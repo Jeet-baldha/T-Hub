@@ -8,7 +8,6 @@ Header:
 Welcome to T-Hub, the one-stop hub for all your t-shirt needs! Explore our curated collection of trendy and unique t-shirts designed to elevate your style. Whether you're into casual comfort, statement graphics, or personalized prints, T-Hub has something for everyone. Shop the latest trends, express your individuality, and redefine your wardrobe with our quality and fashionable t-shirts.
 
 Footer:
-
 About Us:
 At T-Hub, we're passionate about fashion and self-expression. Our mission is to provide a diverse range of high-quality t-shirts that not only look great but also allow you to showcase your unique personality. Explore our story and commitment to bringing you the best in the world of t-shirts.
 

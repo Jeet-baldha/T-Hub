@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
-import data from '../assets/Data/t-shirt'
-import { NavLink, useParams } from 'react-router-dom'
+import data from '../../assets/Data/t-shirt'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import ProductCard from '../components/ProductCard'
+import ProductCard from '../../components/ProductCard/ProductCard'
 
 function Category() {
 
@@ -20,10 +20,10 @@ function Category() {
             } catch (error) {
                 console.log(error);
             }
-            
+
         }
-        fetchData();   
-        
+        fetchData();
+
 
     }, [category])
 

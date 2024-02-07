@@ -1,45 +1,45 @@
 /* eslint-disable no-unused-vars */
-import React, { useState,useEffect } from 'react'
-import StarRating from '../components/StarRating'
-import ProductCard from '../components/ProductCard'
+import React, { useState, useEffect } from 'react'
+import StarRating from '../../components/Button/StarRating'
+import ProductCard from '../../components/ProductCard/ProductCard'
 import { NavLink, useParams } from 'react-router-dom';
-import data from '../assets/Data/t-shirt';
+import data from '../../assets/Data/t-shirt';
 import axios from 'axios';
-import CartBtn from '../components/CartBtn';
+import CartBtn from '../../components/Button/CartBtn';
 
 function Product() {
 
-    const [product,setProduct] = useState({});
+    const [product, setProduct] = useState({});
     const [activeImgUrl, setActiveImgUrl] = useState("");
     const [activeLink, setActiveLink] = useState("pd");
-    const {slug} = useParams()
+    const { slug } = useParams()
     useEffect(() => {
         const fetchData = async () => {
-            
+
             try {
                 const dataP = await axios.get(`http://localhost:3000/product/${slug}`)
                 setProduct(dataP.data);
-                
+
             } catch (error) {
                 console.log(error);
             }
-            
+
         }
-        fetchData();   
-        
-    },[slug])
+        fetchData();
+
+    }, [slug])
 
     useEffect(() => {
-            setActiveImgUrl(product.frontImage);
-    },[slug,product.frontImage])
+        setActiveImgUrl(product.frontImage);
+    }, [slug, product.frontImage])
 
     const sizes = ['S', 'M', 'L', 'XL'];
     const colors = ['red', 'green', 'blue', 'yellow'];
 
-   
+
 
     const activeLinkStyle = {
-        "color":"black",
+        "color": "black",
         "borderBottom": "2px solid black",
     }
 
@@ -54,12 +54,12 @@ function Product() {
                 <div className='flex gap-10 flex-col sm:flex-row'>
                     <div className='flex px-10 sm:px-0 gap-10'>
                         <div className=' flex-col gap-10 flex'>
-                            <img className= {`w-16 sm:w-24 cursor-pointer`}
-                            src={product.frontImage}  
-                            onClick={(e) => setActiveImgUrl(e.target.src)}>
+                            <img className={`w-16 sm:w-24 cursor-pointer`}
+                                src={product.frontImage}
+                                onClick={(e) => setActiveImgUrl(e.target.src)}>
                             </img>
-                            <img className=' w-16 sm:w-24 cursor-pointer' src={product.backImage} 
-                            onClick={(e) => setActiveImgUrl(e.target.src)}
+                            <img className=' w-16 sm:w-24 cursor-pointer' src={product.backImage}
+                                onClick={(e) => setActiveImgUrl(e.target.src)}
                             >
 
                             </img>
@@ -75,7 +75,7 @@ function Product() {
                             <span className='text-zinc-400'> {product.reviews ? product.reviews.length : 0} Review(s)</span>
                         </div>
                         <p className='font-bold text-xl pt-5'>&#x20b9; {product.price}</p>
-                        <p className='py-5'>Available: {product.stock > 1 ?<span className=' text-emerald-500'>In stock</span> : <span className=' text-red-500'>out of stock</span> }  </p>
+                        <p className='py-5'>Available: {product.stock > 1 ? <span className=' text-emerald-500'>In stock</span> : <span className=' text-red-500'>out of stock</span>}  </p>
                         <hr></hr>
                         <p className='py-5 text-zinc-500 text-justify'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum eros idoni rutrum fermentum. Proin nec felis dui. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
                         <hr></hr>
@@ -123,9 +123,9 @@ function Product() {
 
             <div>
                 <div className='px-10 flex gap-10  md:text-xl font-medium text-zinc-400'>
-                    <div onClick={() => setActiveLink("pd")} className=" hover:cursor-pointer duration-200 pb-3" style={activeLink === "pd" ? activeLinkStyle : null } >Product Description</div>
-                    <div onClick={() => setActiveLink("ai")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "ai" ? activeLinkStyle : null } >Addtional Information</div>
-                    <div onClick={() => setActiveLink("re")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "re" ? activeLinkStyle : null } >Review(0)</div>
+                    <div onClick={() => setActiveLink("pd")} className=" hover:cursor-pointer duration-200 pb-3" style={activeLink === "pd" ? activeLinkStyle : null} >Product Description</div>
+                    <div onClick={() => setActiveLink("ai")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "ai" ? activeLinkStyle : null} >Addtional Information</div>
+                    <div onClick={() => setActiveLink("re")} className=' hover:cursor-pointer  duration-200 pb-3' style={activeLink === "re" ? activeLinkStyle : null} >Review(0)</div>
                 </div>
                 <hr className='mx-10'></hr>
             </div>
@@ -145,12 +145,12 @@ function Product() {
                     <li>Material: Outer: 50% Linen & 50% Polyamide; Body Lining: 100% Cotton; Lining: 100% Acetate</li>
                 </ul>
             </div>
-            
+
             <div className='px-4'>
                 <h1 className='py-10 text-3xl text-zinc-500 font-bold text-center'>Related Products</h1>
                 <div className='flex sm:gap-10 gap-4 overflow-auto py-5'>
 
-                {data.tshirts.map((tshirts) => (<div key={tshirts.id} ><ProductCard   {...tshirts} /></div>))}
+                    {data.tshirts.map((tshirts) => (<div key={tshirts.id} ><ProductCard   {...tshirts} /></div>))}
                 </div>
             </div>
 

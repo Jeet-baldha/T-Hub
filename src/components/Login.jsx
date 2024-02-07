@@ -26,8 +26,9 @@ function Login(
     const handleLogin = (e) => {
         e.preventDefault();
 
+        console.log(input);
         try {
-            fetch('http://localhost:3000/user/login',{
+            fetch('http://localhost:3000/auth/user/login',{
                 method : 'POST',
                 headers: {
                     'Content-Type': 'application/json',

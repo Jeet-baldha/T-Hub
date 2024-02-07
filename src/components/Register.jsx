@@ -26,7 +26,7 @@ function Register(
     const handleRegister = (e) => {
         e.preventDefault();
 
-        fetch('http://localhost:3000/user/register', {
+        fetch('http://localhost:3000/auth/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
