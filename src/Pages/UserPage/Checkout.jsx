@@ -19,7 +19,6 @@ function Checkout() {
     });
 
     const [cartData, setCartData] = useState([]);
-    const [paymentMethods, setPaymentMethods] = useState("");
     const userID = useSelector(state => state.auth.userId);
 
 
@@ -50,9 +49,6 @@ function Checkout() {
         }));
     };
 
-    const handelPaymentMethod = (e) => {
-        setPaymentMethods(e.target.value);
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -61,7 +57,6 @@ function Checkout() {
             customer: billingDetails,
             items: cartData,
             totalAmount: calculateTotalPrice(),
-            paymentMethod: paymentMethods
         }
 
         console.log(postData);
@@ -180,26 +175,6 @@ function Checkout() {
                                         <p className='py-5 text-xl'><span>Order Totals</span> <span className=' float-right'>&#x20b9; {calculateTotalPrice()}</span></p>
                                         <hr></hr>
 
-                                        <div className='pt-5 flex flex-col gap-5'>
-
-                                            <div>
-                                                <input name='paymentType' onChange={handelPaymentMethod} value="Direct bank transfer" type='radio' className=' bg-black'></input>
-                                                <label className='pl-5'>Direct bank transfer</label>
-                                            </div>
-                                            <div>
-                                                <input name='paymentType' onChange={handelPaymentMethod} value="Credit card" type='radio' className=' bg-black'></input>
-                                                <label className='pl-5'>Credit card</label>
-                                            </div>
-                                            <div>
-                                                <input name='paymentType' onChange={handelPaymentMethod} value="UPI" type='radio' className=' bg-black'></input>
-                                                <label className='pl-5'>UPI</label>
-                                            </div>
-                                            <div>
-                                                <input name='paymentType' onChange={handelPaymentMethod} value="Cash on delivery" type='radio' className=' bg-black'></input>
-                                                <label className='pl-5'>Cash on delivery</label>
-                                            </div>
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>

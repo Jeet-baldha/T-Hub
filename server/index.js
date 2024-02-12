@@ -7,11 +7,11 @@ import session from 'express-session';
 import passport from 'passport';
 import flash from 'connect-flash'
 import {login,register,logout, user} from './api/authentication.js';
-import User from './api/database.js';
-import { addOrder, order } from './api/order.js';
+import {User} from './api/database.js';
+import { orders } from './api/order.js';
 import { getProduct, productCategory, topratedProduct } from './api/product.js';
 import { addToCart, deleteItem, getCart } from './api/cart.js';
-import { checkout, paymentVerfication } from './api/payment.js';
+import { checkout, paymentVerification } from './api/payment.js';
 
 
 const app = express();
@@ -50,11 +50,10 @@ app.post('/auth/user/login', login);
 app.get('/auth/user/logout', logout);
 app.get('/user', user)
 
-app.get('/user/order', order)
-app.post('/user/order', addOrder)
+app.get('/user/order', orders)
 
 app.post('/checkout', checkout)
-app.post('/paymentVerfication',paymentVerfication)
+app.post('/paymentVerfication',paymentVerification)
 
 app.get('/:category/products',productCategory)
 app.get('/product/toprated', topratedProduct)

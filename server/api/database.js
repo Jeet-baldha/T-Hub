@@ -13,7 +13,23 @@ const userSchema = new mongoose.Schema({
 
 userSchema.plugin(passportLocalMongoose)
 
-const User = mongoose.model('user', userSchema);
+export const User = mongoose.model('user', userSchema);
 
-export default User;
+const orderSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Reference to the UserModel
+        required: true,
+    },
+    razorpay_order_id:String,
+    customer: Object, // Adjust the schema based on your customer details
+    items: Array, // Adjust the schema based on your item details
+    totalAmount: Number,
+    paymentMethod: String,
+    status: String,
+}, { timestamps: true });
+
+export const OrderModel = mongoose.model('Order', orderSchema);
+
+
 

@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import data from "../../src/assets/Data/t-shirt.js";
-import User from "./database.js";
+import {User} from "./database.js";
 
 export const addToCart = async (req, res) => {
 

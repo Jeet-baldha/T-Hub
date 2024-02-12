@@ -1,5 +1,5 @@
 import passport from "passport";
-import User from './database.js'
+import {User} from './database.js'
 import { Strategy as LocalStrategy } from "passport-local";
 
 
