@@ -30,8 +30,8 @@ function Product() {
     }, [slug])
 
     useEffect(() => {
-        setActiveImgUrl(product.frontImage);
-    }, [slug, product.frontImage])
+        setActiveImgUrl(`data:${product?.frontImage?.contentType};base64,${product?.frontImage?.data}`);
+    }, [slug, product?.frontImage])
 
     const sizes = ['S', 'M', 'L', 'XL'];
     const colors = ['red', 'green', 'blue', 'yellow'];
@@ -54,14 +54,13 @@ function Product() {
                 <div className='flex gap-10 flex-col sm:flex-row'>
                     <div className='flex px-10 sm:px-0 gap-10'>
                         <div className=' flex-col gap-10 flex'>
-                            <img className={`w-16 sm:w-24 cursor-pointer`}
-                                src={product.frontImage}
-                                onClick={(e) => setActiveImgUrl(e.target.src)}>
-                            </img>
-                            <img className=' w-16 sm:w-24 cursor-pointer' src={product.backImage}
+                            <img className=' w-16 sm:w-24 cursor-pointer' src={`data:${product?.frontImage?.contentType};base64,${product?.frontImage?.data}`}
                                 onClick={(e) => setActiveImgUrl(e.target.src)}
                             >
-
+                            </img>
+                            <img className={`w-16 sm:w-24 cursor-pointer`}
+                                src={`data:${product?.backImage?.contentType};base64,${product?.backImage?.data}`}
+                                onClick={(e) => setActiveImgUrl(e.target.src)}>
                             </img>
                         </div>
                         <div className='relative overflow-hidden'>
@@ -150,7 +149,7 @@ function Product() {
                 <h1 className='py-10 text-3xl text-zinc-500 font-bold text-center'>Related Products</h1>
                 <div className='flex sm:gap-10 gap-4 overflow-auto py-5'>
 
-                    {data.tshirts.map((tshirts) => (<div key={tshirts.id} ><ProductCard   {...tshirts} /></div>))}
+                    {/* {data.tshirts.map((tshirts) => (<div key={tshirts._id} ><ProductCard   product={tshirts} /></div>))} */}
                 </div>
             </div>
 

@@ -33,19 +33,21 @@ function CartProduct({
         
     },[])
 
+    const calculatePrice = () => product.price - (product.discount * product.price) / 100;
+
 
     return (
         <div className=' bg-zinc-100 rounded-sm p-5 w-full flex sm:gap-20 gap-10'>
             <div className=' w-20 lg:w-32'>
-                <img src={product.frontImage}></img>
+                <img src={`data:${product?.frontImage?.contentType};base64,${product?.frontImage?.data}`}></img>
             </div>
             <div className='lg:p-5 text-sm sm:text-base'>
                 <NavLink to={`/product/${product.slug}`}>
                     <h1 className=' xl:text-2xl font-bold'>{product.name}</h1>
                 </NavLink>
                 <div>
-                    <span className=' font-bold pr-2'>&#x20b9;{product.price}</span>
-                    <span className='line-through text-gray-400'>&#x20b9;50</span>
+                    <span className=' font-bold pr-2'>&#x20b9;{calculatePrice()}</span>
+                    <span className='line-through text-gray-400'>&#x20b9;{product.price}</span>
                 </div>
                 <StarRating rating={product.rating} />
                 <span>Reviews ({product.reviews ? product.reviews.length : 0})</span>

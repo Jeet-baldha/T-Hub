@@ -1,38 +1,67 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import ProductCard from '../../components/ProductCard/ProductCard';
+
 
 const ProductForm = () => {
     const [product, setProduct] = useState({
         name: '',
         price: 0,
         stock: 0,
+        discount: 0,
         category: '',
         frontImage: null,
         backImage: null,
-        rating: 0,
-        reviews: [],
-        slug: '',
     });
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setProduct({ ...product, [name]: value });
     };
 
-    const handleFileChange = (e) => {
+
+    const handleImageChange = (e) => {
         const { name, files } = e.target;
-        setProduct({ ...product, [name]: files[0] });
+        setProduct((prev) => ({ ...prev, [name]: files[0] }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Perform actions like sending the data to your backend or updating the state
-        console.log('Form submitted:', product);
+        const formData = new FormData();
+        formData.append('name', product.name);
+        formData.append('price', product.price);
+        formData.append('discount', product.discount);
+        formData.append('stock', product.stock);
+        formData.append('category', product.category);
+        formData.append('frontImage', product.frontImage);
+        formData.append('backImage', product.backImage);
+
+        try {
+
+            const response = await fetch('http://localhost:3000/addProduct', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                // Handle success, maybe redirect or show a success message
+                alert('Form submitted successfully!');
+            } else {
+                // Handle error, maybe show an error message
+                alert('Form submission failed.');
+            }
+        } catch (error) {
+            alert('Error during form submission:', error);
+        }
     };
+
+
 
     return (
         <div className='xl:mx-28 bg-white sm:p-10 pt-0 overflow-hidden'>
             <h2>Add a New Product</h2>
-            <form className=' flex flex-col w-96 gap-2' onSubmit={handleSubmit}>
+            <form className=' flex flex-col w-96 gap-2' onSubmit={handleSubmit} encType='multipart/form-data'>
                 <label htmlFor="name">Product Name:</label>
                 <input
                     type="text"
@@ -50,6 +79,16 @@ const ProductForm = () => {
                     id="price"
                     name="price"
                     value={product.price}
+                    onChange={handleInputChange}
+                    required
+                    className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
+                />
+                <label htmlFor="discount">discount:</label>
+                <input
+                    type="number"
+                    id="discount"
+                    name="discount"
+                    value={product.discount}
                     onChange={handleInputChange}
                     required
                     className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
@@ -82,7 +121,8 @@ const ProductForm = () => {
                     type="file"
                     id="frontImage"
                     name="frontImage"
-                    onChange={handleFileChange}
+                    onChange={handleImageChange}
+                    accept="image/*"
                     required
                     className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
                 />
@@ -92,15 +132,18 @@ const ProductForm = () => {
                     type="file"
                     id="backImage"
                     name="backImage"
-                    onChange={handleFileChange}
+                    onChange={handleImageChange}
+                    accept="image/*"
                     required
                     className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
                 />
 
-            
 
-                <button type="submit"  className='w-full p-4 mt-1 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer'>Add Product</button>
+
+                <button type="submit" className='w-full p-4 mt-1 hover:bg-zinc-700 text-xl bg-black text-white hover:cursor-pointer'>Add Product</button>
             </form>
+
+            
         </div>
     );
 };

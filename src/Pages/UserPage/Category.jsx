@@ -44,7 +44,7 @@ function Category() {
                 </div>
             </div>
             <div className=' grid xl:p-10 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-y-12 :gap-10 md:gap-20 min-[500px]:grid-cols-3'>
-                {products.map((tshirts) => (<div key={tshirts.id}><ProductCard  {...tshirts} /></div>))}
+                {products.map((tshirts) => (<div key={tshirts._id}><ProductCard  product={tshirts} /></div>))}
             </div>
         </div>
     )

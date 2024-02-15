@@ -1,23 +1,24 @@
 /* eslint-disable no-unused-vars */
+import mongoose from "mongoose";
 import data from "../../src/assets/Data/t-shirt.js";
-import {User} from "./database.js";
+import {User,product} from "./database.js";
 
 export const addToCart = async (req, res) => {
 
     if (req.headers.userid) {
 
 
-        const productID = req.body.productID;
+        const productID =  req.body.productID;
         const userID = req.headers.userid;
 
         const user = await User.findById(userID);
-        const product = data.tshirts.find((tshirts) => tshirts.id === productID);
-
+        const p = await product.findById(productID);
+        
         const item = {
-            productID: product.id,
-            name: product.name,
-            price: product.price,
-            slug: product.slug,
+            productID: p._id,
+            name: p.name,
+            price: p.price,
+            slug: p.slug,
         }
 
         if (user.cart.find((item) => item.productID === productID)) {
@@ -50,7 +51,9 @@ export const getCart = async (req, res) => {
 
 export const deleteItem = async (req, res) => {
 
-    const productID = req.body.productID;
+    const productID = new mongoose.Types.ObjectId(req.body.productID);
+    console.log(typeof(productID)); 
+    console.log(req.headers.userid)
     try {
         const result = await User.updateMany(
             { _id: req.headers.userid },
