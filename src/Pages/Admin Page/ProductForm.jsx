@@ -12,6 +12,8 @@ const ProductForm = () => {
         category: '',
         frontImage: null,
         backImage: null,
+        description: "",
+        Specification:"",
     });
 
 
@@ -34,26 +36,30 @@ const ProductForm = () => {
         formData.append('discount', product.discount);
         formData.append('stock', product.stock);
         formData.append('category', product.category);
+        formData.append('Specification', product.Specification);
+        formData.append('description', product.description);
         formData.append('frontImage', product.frontImage);
         formData.append('backImage', product.backImage);
 
-        try {
+        // try {
 
-            const response = await fetch('http://localhost:3000/addProduct', {
-                method: 'POST',
-                body: formData,
-            });
+        //     const response = await fetch('http://localhost:3000/addProduct', {
+        //         method: 'POST',
+        //         body: formData,
+        //     });
 
-            if (response.ok) {
-                // Handle success, maybe redirect or show a success message
-                alert('Form submitted successfully!');
-            } else {
-                // Handle error, maybe show an error message
-                alert('Form submission failed.');
-            }
-        } catch (error) {
-            alert('Error during form submission:', error);
-        }
+        //     if (response.ok) {
+        //         // Handle success, maybe redirect or show a success message
+        //         alert('Form submitted successfully!');
+        //     } else {
+        //         // Handle error, maybe show an error message
+        //         alert('Form submission failed.');
+        //     }
+        // } catch (error) {
+        //     alert('Error during form submission:', error);
+        // }
+
+        console.log(product);
     };
 
 
@@ -83,7 +89,7 @@ const ProductForm = () => {
                     required
                     className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
                 />
-                <label htmlFor="discount">discount:</label>
+                <label htmlFor="discount">Discount:</label>
                 <input
                     type="number"
                     id="discount"
@@ -104,17 +110,37 @@ const ProductForm = () => {
                     required
                     className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
                 />
-
-                <label htmlFor="category">Category:</label>
-                <input
+                <label htmlFor="stock">Description:</label>
+                <textarea
                     type="text"
-                    id="category"
-                    name="category"
-                    value={product.category}
+                    name="description"
+                    value={product.description}
                     onChange={handleInputChange}
+                    placeholder='please enter descriptiom'
                     required
                     className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
                 />
+                <label htmlFor="stock">Specification:</label>
+                <textarea
+                    type="text"
+                    name="description"
+                    value={product.Specification}
+                    onChange={handleInputChange}
+                    placeholder='please enter specification bullet points in "," seprated value'
+                    required
+                    className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
+                />
+
+                <label htmlFor="category">Category:</label>
+                <select id="category"
+                    name="category"
+                    className='w-full px-5 py-2 mt-2 border-zinc-500 outline-none border-1 border rounded-sm'
+                    value={product.category}
+                    onChange={handleInputChange}>
+                    <option value={'Men'}>Men</option>
+                    <option value={'Women'}>Women</option>
+                    <option value={'Children'}>Children</option>
+                </select>
 
                 <label htmlFor="frontImage">Front Image:</label>
                 <input

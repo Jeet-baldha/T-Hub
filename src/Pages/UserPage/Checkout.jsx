@@ -58,8 +58,7 @@ function Checkout() {
             items: cartData,
             totalAmount: calculateTotalPrice(),
         }
-
-        console.log(postData);
+                    
         try {
             const response = await axios.post("http://localhost:3000/checkout", postData, {
                 headers: {
@@ -168,7 +167,7 @@ function Checkout() {
                                     <hr></hr>
 
                                     <div>
-                                        {cartData.map(item => <p className='py-3' key={item.productID}><a className=' hover:text-zinc-400 hover:cursor-pointer'><span>{item.name}</span></a> <span className=' float-right'>&#x20b9; {item.price}</span></p>)}
+                                        {cartData.map(item => <NavLink className='py-3'  to={`/product/${item.slug}`} key={item.productID}><a className=' hover:text-zinc-400 hover:cursor-pointer'><span>{item.name}</span></a> <span className=' float-right'>&#x20b9; {item.price}</span></NavLink>)}
 
                                         <p className='py-5 text-xl'><span>Cart Subtotal</span> <span className=' float-right'>&#x20b9; {calculateTotalPrice()}</span></p>
                                         <hr />

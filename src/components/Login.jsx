@@ -26,7 +26,6 @@ function Login(
     const handleLogin = (e) => {
         e.preventDefault();
 
-        console.log(input);
         try {
             fetch('http://localhost:3000/auth/user/login',{
                 method : 'POST',
@@ -59,8 +58,6 @@ function Login(
     return (
         <div className='pt-10' style={{ display: activeBtn === 'Login' ? 'block' : 'none' }}>
                         <h1 className='text-center text-xl sm:text-2xl font-normal'>LOGIN TO YOUR A ACCOUNT</h1>
-                        username = {input.username}
-                        password = {input.password}
                         <form className='px-5 sm:px-10 py-5 flex gap-5 flex-col'  onSubmit={handleLogin} >
                             <div>
                                 <label className='text-zinc-500'>Username <span className=' text-red-500'>*</span></label>

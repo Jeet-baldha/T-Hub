@@ -2,13 +2,13 @@
 import mongoose from "mongoose";
 import data from "../../src/assets/Data/t-shirt.js";
 import {User,product} from "./database.js";
-
+import {ObjectId} from 'mongodb'
 export const addToCart = async (req, res) => {
 
     if (req.headers.userid) {
 
 
-        const productID =  req.body.productID;
+        const productID =  new ObjectId(req.body.productID);
         const userID = req.headers.userid;
 
         const user = await User.findById(userID);
@@ -21,13 +21,15 @@ export const addToCart = async (req, res) => {
             slug: p.slug,
         }
 
-        if (user.cart.find((item) => item.productID === productID)) {
-            res.send({ message: "You already have this product in your cart" });
+        const isProductInCart = user.cart.some(cartItem => cartItem.productID.equals(productID));
+
+        if (isProductInCart) {
+            res.status(200).send({ message: "You already have this product in your cart" });
         }
         else {
             const result = await User.updateOne(
                 { _id: userID },
-                { $push: { cart: item } }
+                { $push: { cart: item }}
             )
             res.status(200).send({ message: "added to cart" });
         }
@@ -52,8 +54,6 @@ export const getCart = async (req, res) => {
 export const deleteItem = async (req, res) => {
 
     const productID = new mongoose.Types.ObjectId(req.body.productID);
-    console.log(typeof(productID)); 
-    console.log(req.headers.userid)
     try {
         const result = await User.updateMany(
             { _id: req.headers.userid },

@@ -30,9 +30,8 @@
 
 
             await order.save();
-            // const updateResponse = User.updateOne({_id:userID},{$set:{cart:null}})
-            // console.log(updateResponse)
-
+            const updateResponse = await User.updateOne({_id:userID},{$set:{cart:[]}},{multi:true});
+            // console.log(updateResponse);
         } catch (error) {
             res.status(404).send(error);
         }

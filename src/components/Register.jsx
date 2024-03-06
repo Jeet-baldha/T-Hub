@@ -53,9 +53,6 @@ function Register(
     return (
         <div className='pt-10 hidden' style={{ display: activeBtn === 'Register' ? 'block' : 'none' }}>
             <h1 className='text-center text-xl sm:text-2xl font-normal'>REGISTER TO YOUR A ACCOUNT</h1>
-            username = {input.username}
-            password = {input.password}
-            phone = {input.phone}
             <form className='px-5 sm:px-10 py-5 flex gap-5 flex-col' onSubmit={handleRegister}>
                 <div>
                     <label className='text-zinc-500'>Username <span className=' text-red-500'>*</span></label>

@@ -34,8 +34,6 @@ export const addProduct =  async (req, res) => {
 
         // Save the product to MongoDB
         await newProduct.save();
-
-        console.log('Product saved in MongoDB');
         res.send('Product added successfully!');
     } catch (error) {
         console.error(error);

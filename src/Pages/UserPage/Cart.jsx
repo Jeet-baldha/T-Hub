@@ -26,8 +26,7 @@ function Cart() {
     }
 
     useEffect(() => {
-
-        fetchData();
+       fetchData();
     }, [])
 
     const deleteItem = (productId) => {

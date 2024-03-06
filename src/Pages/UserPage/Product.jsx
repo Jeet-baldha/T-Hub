@@ -12,7 +12,7 @@ function Product() {
     const [product, setProduct] = useState({});
     const [activeImgUrl, setActiveImgUrl] = useState("");
     const [activeLink, setActiveLink] = useState("pd");
-    const { slug } = useParams()
+    const { slug } = useParams();
     useEffect(() => {
         const fetchData = async () => {
 
@@ -110,7 +110,7 @@ function Product() {
                                 <button className=' text-sm self-center mt-2 hover:bg-black hover:text-white hover:cursor-pointer border-2 px-2 py-1 sm:px-4 sm:py-2 border-black'>Buy now</button>
                             </div>
                             <div>
-                                <CartBtn id={product.id}></CartBtn>
+                                <CartBtn id={product._id}></CartBtn>
                             </div>
 
                         </div>
